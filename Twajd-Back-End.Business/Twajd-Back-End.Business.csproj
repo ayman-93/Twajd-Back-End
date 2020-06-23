@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Twajd_Back_End.Business</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Twajd-Back-End.Core\Twajd-Back-End.Core.csproj" />
+    <ProjectReference Include="..\Twajd-Back-End.DataAccess\Twajd-Back-End.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
