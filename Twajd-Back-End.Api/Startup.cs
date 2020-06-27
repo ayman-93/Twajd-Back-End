@@ -36,7 +36,7 @@ namespace Twajd_Back_End
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api Docs", Version = "V1" });
-                c.EnableAnnotations();
+                //c.EnableAnnotations();
 
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "Twajd-Back-End.xml");
                 c.IncludeXmlComments(filePath);
@@ -61,10 +61,10 @@ namespace Twajd_Back_End
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapAreaControllerRoute(
-                    name: "MyAreaAdmin",
-                    areaName: "Admin",
-                    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapAreaControllerRoute(
+                //    name: "MyAreaAdmin",
+                //    areaName: "Admin",
+                //    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
 
                 //endpoints.MapAreaControllerRoute(
                 //    name: "MyAreaServices",

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Twajd_Back_End.Core.Models;
+using Twajd_Back_End.Core.Repositories;
 
-namespace Twajd_Back_End.DataAccess.Repositories.Impl
+namespace Twajd_Back_End.DataAccess.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {

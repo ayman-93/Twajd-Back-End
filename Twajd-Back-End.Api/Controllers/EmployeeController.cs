@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Twajd_Back_End.Business.Services;
+using Twajd_Back_End.Core.Services;
 using Twajd_Back_End.Core.Models;
 
-namespace Twajd_Back_End.Areas.Admin.Controllers
+namespace Twajd_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class EmployeeController : Controller
     {
@@ -17,7 +17,7 @@ namespace Twajd_Back_End.Areas.Admin.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("a/{id}")]
         public async Task<Employee> GetEmployeeById(Guid id)
         {
             return await _employeeService.GetEmployeeById(id);

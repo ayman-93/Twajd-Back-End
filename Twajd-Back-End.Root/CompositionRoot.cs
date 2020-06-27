@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Twajd_Back_End.Business.Services;
 using Twajd_Back_End.Business.Services.Impl;
+using Twajd_Back_End.Core.Repositories;
+using Twajd_Back_End.Core.Services;
 using Twajd_Back_End.DataAccess.Repositories;
-using Twajd_Back_End.DataAccess.Repositories.Impl;
-using Twajd_Back_End.DataAccess.Repository;
 
 namespace Twajd_Back_End.Root
 {

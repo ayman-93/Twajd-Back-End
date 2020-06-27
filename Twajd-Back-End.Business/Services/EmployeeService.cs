@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Twajd_Back_End.Core.Models;
-using Twajd_Back_End.DataAccess.Repository;
+using Twajd_Back_End.Core.Repositories;
+using Twajd_Back_End.Core.Services;
 
 namespace Twajd_Back_End.Business.Services.Impl
 {

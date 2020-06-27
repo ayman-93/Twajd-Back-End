@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
-namespace Twajd_Back_End.Areas.Admin.Controllers
+namespace Twajd_Back_End.Controllers
 {
-    [Area("Admin")]
-    [Route("[area]/[controller]")]
+    //[Area("Admin")]
+    [Route("[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
 
         // GET: admin/User
-        [SwaggerOperation(Tags = new[] { "Admin-User" })]
+        //[SwaggerOperation(Tags = new[] { "Admin-User" })]
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -24,7 +23,7 @@ namespace Twajd_Back_End.Areas.Admin.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         // GET: admin/User/5
-        [SwaggerOperation(Tags = new[] { "Admin-User" })]
+        //[SwaggerOperation(Tags = new[] { "Admin-User" })]
         [HttpGet("{id}")]
         public string Get(int id)
         {
@@ -32,7 +31,7 @@ namespace Twajd_Back_End.Areas.Admin.Controllers
         }
 
         // POST: admin/User
-        [SwaggerOperation(Tags = new[] { "Admin-User" })]
+        //[SwaggerOperation(Tags = new[] { "Admin-User" })]
         [HttpPost]
         public void Post([FromBody] string value)
         {
@@ -44,14 +43,14 @@ namespace Twajd_Back_End.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
-        [SwaggerOperation(Tags = new[] { "Admin-User" })]
+        //[SwaggerOperation(Tags = new[] { "Admin-User" })]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE: admin/ApiWithActions/5
-        [SwaggerOperation(Tags = new[] { "Admin-User" })]
+        //[SwaggerOperation(Tags = new[] { "Admin-User" })]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

@@ -10,8 +10,8 @@ using Twajd_Back_End.DataAccess.Repositories;
 namespace Twajd_Back_End.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200620214625_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200627210007_firstMigration")]
+    partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

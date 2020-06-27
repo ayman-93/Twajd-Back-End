@@ -3,18 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twajd-Back-End", "Twajd-Back-End\Twajd-Back-End.csproj", "{C28D9EB9-49B7-4F78-86D7-0B0AB3C92AB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twajd-Back-End.Api", "Twajd-Back-End.Api\Twajd-Back-End.Api.csproj", "{C28D9EB9-49B7-4F78-86D7-0B0AB3C92AB6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{595E4847-6248-4833-ABAD-279FC566552A} = {595E4847-6248-4833-ABAD-279FC566552A}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twajd-Back-End.DataAccess", "Twajd-Back-End.DataAccess\Twajd-Back-End.DataAccess.csproj", "{595E4847-6248-4833-ABAD-279FC566552A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twajd-Back-End.Core", "Twajd-Back-End.Core\Twajd-Back-End.Core.csproj", "{F1020CB6-E991-4379-8AE6-9CF9CCDCBD5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twajd-Back-End.Core", "Twajd-Back-End.Core\Twajd-Back-End.Core.csproj", "{F1020CB6-E991-4379-8AE6-9CF9CCDCBD5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twajd-Back-End.Root", "Twajd-Back-End.Root\Twajd-Back-End.Root.csproj", "{84388FC8-F818-4AD3-9458-75DAD8D3B1EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twajd-Back-End.Root", "Twajd-Back-End.Root\Twajd-Back-End.Root.csproj", "{84388FC8-F818-4AD3-9458-75DAD8D3B1EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twajd-Back-End.Business", "Twajd-Back-End.Business\Twajd-Back-End.Business.csproj", "{BE04566D-D719-4D24-ADC7-A849CA569A87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twajd-Back-End.Business", "Twajd-Back-End.Business\Twajd-Back-End.Business.csproj", "{BE04566D-D719-4D24-ADC7-A849CA569A87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

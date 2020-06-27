@@ -1,7 +1,7 @@
 ﻿using Twajd_Back_End.Core.Models;
-using Twajd_Back_End.DataAccess.Repository;
+using Twajd_Back_End.Core.Repositories;
 
-namespace Twajd_Back_End.DataAccess.Repositories.Impl
+namespace Twajd_Back_End.DataAccess.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {

@@ -5,16 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Twajd_Back_End.Core.Models;
-using Twajd_Back_End.DataAccess.Repositories;
-using Twajd_Back_End.Business.Services;
-using Twajd_Back_End.DataAccess.Repository;
-using Twajd_Back_End.Business.Services.Impl;
+using Twajd_Back_End.Core.Repositories;
+using Twajd_Back_End.Core.Services;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Diagnostics;
 
-namespace Twajd_Back_End.Areas.Admin.Controllers
+namespace Twajd_Back_End.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CompaniesController : ControllerBase
     {

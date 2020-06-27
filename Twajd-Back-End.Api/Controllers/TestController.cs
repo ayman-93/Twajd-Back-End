@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 
-namespace Twajd_Back_End.Areas.Admin.Controllers
+namespace Twajd_Back_End.Controllers
 {
-    [Area("Admin")]
-    [Route("[area]/[controller]")]
+    //[Area("Admin")]
+    [Route("[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
         // GET: admin/test
-        [SwaggerOperation(Tags = new[] { "Admin-Test" })]
+        //[SwaggerOperation(Tags = new[] { "Admin-Test" })]
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -22,7 +17,7 @@ namespace Twajd_Back_End.Areas.Admin.Controllers
         }
 
         // GET: admin/test/5
-        [SwaggerOperation(Tags = new[] { "Admin-Test" })]
+       // [SwaggerOperation(Tags = new[] { "Admin-Test" })]
         [HttpGet("{id}")]
         public string Get(int id)
         {

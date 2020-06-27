@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Twajd_Back_End.Core.Models;
 
-namespace Twajd_Back_End.DataAccess.Repository
+namespace Twajd_Back_End.Core.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {
