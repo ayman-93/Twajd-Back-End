@@ -6,34 +6,46 @@ namespace Twajd_Back_End.DataAccess.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DatabaseContext _databaseContext;
-        private IUserRepository _userRepository;
-        private ICompanyRepository _companyRepository;
-        private IRepository<Company> _ccompanyRepository;
+        //private IUserRepository _userRepository;
+        //private ICompanyRepository _companyRepository;
+        private IRepository<Company> _companyRepository;
         private IRepository<Employee> _employeeRepository;
+        private IRepository<Location> _locationRepository;
+        private IRepository<Attendance> _attendanceRepository;
 
         public UnitOfWork(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
-        public IUserRepository UserRepository
-        {
-            get { return _userRepository = _userRepository ?? new UserRepository(_databaseContext); }
-        }
+        //public IUserRepository UserRepository
+        //{
+        //    get { return _userRepository = _userRepository ?? new UserRepository(_databaseContext); }
+        //}
 
-        public ICompanyRepository CompanyRepository
-        {
-            get { return _companyRepository = _companyRepository ?? new CompanyRepository(_databaseContext); }
-        }
+        //public ICompanyRepository CompanyRepository
+        //{
+        //    get { return _companyRepository = _companyRepository ?? new CompanyRepository(_databaseContext); }
+        //}
 
-        public IRepository<Company> CCompanyRepository
+        public IRepository<Company> CompanyRepository
         {
-            get { return _ccompanyRepository = _ccompanyRepository ?? new Repository<Company>(_databaseContext); }
+            get { return _companyRepository = _companyRepository ?? new Repository<Company>(_databaseContext); }
         }
 
         public IRepository<Employee> EmployeeRepository
         {
             get { return _employeeRepository = _employeeRepository ?? new Repository<Employee>(_databaseContext); }
+        }
+
+        public IRepository<Location> LocationRepository
+        {
+            get { return _locationRepository = _locationRepository ?? new Repository<Location>(_databaseContext); }
+        }
+
+        public IRepository<Attendance> AttendanceRepository
+        {
+            get { return _attendanceRepository = _attendanceRepository ?? new Repository<Attendance>(_databaseContext); }
         }
 
         public void Commit()

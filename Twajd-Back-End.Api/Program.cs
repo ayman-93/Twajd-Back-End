@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Twajd_Back_End
+namespace Twajd_Back_End.Api
 {
     public class Program
     {

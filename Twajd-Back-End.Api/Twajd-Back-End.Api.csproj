@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Twajd-Back-End.Api</RootNamespace>
+    <RootNamespace>Twajd_Back_End.Api</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
@@ -25,6 +26,5 @@
     <ProjectReference Include="..\Twajd-Back-End.DataAccess\Twajd-Back-End.DataAccess.csproj" />
     <ProjectReference Include="..\Twajd-Back-End.Root\Twajd-Back-End.Root.csproj" />
   </ItemGroup>
-
 
 </Project>

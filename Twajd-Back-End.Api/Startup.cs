@@ -1,35 +1,38 @@
 using System.IO;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Twajd_Back_End.Business.Services;
+using Twajd_Back_End.Core.Services;
+using Twajd_Back_End.Core.Settings;
 using Twajd_Back_End.Root;
 
-namespace Twajd_Back_End
+namespace Twajd_Back_End.Api
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration _configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddIdentity<IdentityUser, IdentityRole<long>>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+            var Jwt = _configuration.GetSection("TokkenSettings");
+            services.Configure<JwtSettings>(Jwt);
 
-            //services.AddScoped<RoleManager<IdentityRole>>();
-            CompositionRoot.injectDependencies(services);
+            CompositionRoot.injectDependencies(services, _configuration);       
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers().AddNewtonsoftJson();
 
 
@@ -75,14 +78,6 @@ namespace Twajd_Back_End
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                //endpoints.MapAreaControllerRoute(
-                //    name: "MyAreaManger",
-                //    areaName: "Maneger",
-                //    pattern: "Maneger/{controller=Home}/{action=Index}/{id?}");
-
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
             app.UseSwagger();

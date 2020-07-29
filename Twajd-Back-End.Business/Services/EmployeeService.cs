@@ -5,7 +5,7 @@ using Twajd_Back_End.Core.Models;
 using Twajd_Back_End.Core.Repositories;
 using Twajd_Back_End.Core.Services;
 
-namespace Twajd_Back_End.Business.Services.Impl
+namespace Twajd_Back_End.Business.Services
 {
     public class EmployeeService : IEmployeeService
     {
@@ -16,15 +16,14 @@ namespace Twajd_Back_End.Business.Services.Impl
             _unitOfWork = unitOfWork;
         }
 
-        public Task<Employee> AddEmployee(Employee entity)
+        public async Task<Employee> AddEmployee(Employee entity)
         {
-            throw new NotImplementedException();
+            _unitOfWork.EmployeeRepository.Insert(entity);
+            _unitOfWork.Commit();
+            return await _unitOfWork.EmployeeRepository.GetById(entity.Id);
         }
 
-        public IEnumerable<Employee> GetAllEmployees(Guid CompanyId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<Employee> GetEmployeeById(Guid Id)
         {

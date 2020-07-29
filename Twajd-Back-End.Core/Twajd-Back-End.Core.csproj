@@ -5,4 +5,17 @@
     <RootNamespace>Twajd_Back_End.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Models\Attendance.cs~RF407744e.TMP" />
+    <None Remove="Models\Auth\ApplicationUser.cs~RF4739f1a.TMP" />
+    <None Remove="Models\Auth\ApplicationUser.cs~RF83ad59.TMP" />
+    <None Remove="Models\Auth\ApplicationUser.cs~RFa1db40c.TMP" />
+    <None Remove="Models\Employee.cs~RF78647e.TMP" />
+    <None Remove="Settings\JwtSettings.cs~RF9a1cdd9.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.5" />
+  </ItemGroup>
+
 </Project>

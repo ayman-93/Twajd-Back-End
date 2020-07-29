@@ -8,10 +8,11 @@ namespace Twajd_Back_End.Core.Services
 {
     public interface ICompanyService
     {
-        IEnumerable<Company> GetAllCompanys();
+        //IEnumerable<Company> GetAllCompanys();
         Task<IEnumerable<Company>> Get();
         Task<Company> GetCompanyById(Guid Id);
         void UpdateComapny(Company company);
         Task<Company> AddCompany(Company entity);
+        Task<IEnumerable<Employee>> GetEmployees(Guid CompanyId);
     }
 }

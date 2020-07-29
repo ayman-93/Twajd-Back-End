@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Twajd-Back-End.Core\Twajd-Back-End.Core.csproj" />
     <ProjectReference Include="..\Twajd-Back-End.DataAccess\Twajd-Back-End.DataAccess.csproj" />
   </ItemGroup>

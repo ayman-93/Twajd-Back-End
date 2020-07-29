@@ -1,9 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Twajd_Back_End.Business.Services.Impl;
+using Twajd_Back_End.Business.Services;
+using Twajd_Back_End.Core.Models.Auth;
 using Twajd_Back_End.Core.Repositories;
 using Twajd_Back_End.Core.Services;
 using Twajd_Back_End.DataAccess.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Twajd_Back_End.Core.Settings;
 
 namespace Twajd_Back_End.Root
 {
@@ -11,16 +15,29 @@ namespace Twajd_Back_End.Root
     {
         public CompositionRoot() { }
 
-        public static void injectDependencies(IServiceCollection services)
+         
+
+        public static void injectDependencies(IServiceCollection services, IConfiguration Configuration)
         {
             services.AddDbContext<DatabaseContext>(p =>
-               p.UseNpgsql("Server=127.0.0.1;port=5432;user id = postgres ;password = 7533; database=TwjdTest; pooling = true"));
+               p.UseNpgsql(Configuration.GetConnectionString("Default")));
             services.AddScoped<DatabaseContext>();
+
+            services.AddIdentity<ApplicationUser, Role>()
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IAuthService, AuthService>();
+            
+
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             //services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            
 
             //services.AddDbContext<DatabaseContext>(opts => opts.UseInMemoryDatabase("database"));
             //services.AddScoped<DatabaseContext>();

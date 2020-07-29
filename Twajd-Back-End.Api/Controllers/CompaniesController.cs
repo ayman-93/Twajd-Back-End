@@ -23,21 +23,20 @@ namespace Twajd_Back_End.Controllers
             _companyService = companyService;
         }
 
-        // GET: api/Companies
-        [HttpGet]
-        public IEnumerable<Company> GetCompanies()
+        //GET: api/Companies
+       [HttpGet]
+        public async Task<IEnumerable<Company>> GetCompanies()
         {
             //var companies = _unitOfWork.CompanyRepository.GetAll();
-            var companies = _companyService.GetAllCompanys();
+            var companies = await _companyService.Get();
             return companies;
-            //return await _context.Companies.ToListAsync();
         }
 
         [HttpGet("/aatest")]
         public async Task<IEnumerable<Company>> GetCompanies2()
         {
             //var companies = _unitOfWork.CompanyRepository.GetAll();
-            var companies = await _companyService.Get();
+            var companies = await _unitOfWork.CompanyRepository.Get();
             return companies;
             //return await _context.Companies.ToListAsync();
         }
@@ -46,7 +45,7 @@ namespace Twajd_Back_End.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(Guid id)
         {
-            var company = await _companyService.GetCompanyById(id);
+            var company = await _unitOfWork.CompanyRepository.GetById(id);
 
             if (company == null)
             {
@@ -67,9 +66,9 @@ namespace Twajd_Back_End.Controllers
                 return NotFound();
             }
 
-            _unitOfWork.CCompanyRepository.Update(company);
+            _unitOfWork.CompanyRepository.Update(company);
             _unitOfWork.Commit();
-            return await _unitOfWork.CCompanyRepository.GetById(company.Id);
+            return await _unitOfWork.CompanyRepository.GetById(company.Id);
         }
 
 
@@ -84,7 +83,7 @@ namespace Twajd_Back_End.Controllers
                 return BadRequest(ModelState);
             }
 
-            Company companyFromDb = await _unitOfWork.CCompanyRepository.GetById(id);
+            Company companyFromDb = await _unitOfWork.CompanyRepository.GetById(id);
             if (companyFromDb == null)
             {
                 return NotFound();
@@ -98,7 +97,7 @@ namespace Twajd_Back_End.Controllers
                 return BadRequest(ModelState);
             }
 
-            _unitOfWork.CCompanyRepository.Update(companyFromDb);
+            _unitOfWork.CompanyRepository.Update(companyFromDb);
             _unitOfWork.Commit();
             return companyFromDb;
         }
@@ -133,9 +132,10 @@ namespace Twajd_Back_End.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Company>> PostCompany(Company company)
+        public /*async Task<ActionResult<Company>>*/ void PostCompany(Company company)
         {
-            return await _companyService.AddCompany(company);
+            _unitOfWork.CompanyRepository.Insert(company);
+            _unitOfWork.Commit();
             //_unitOfWork.CompanyRepository.Insert(company);
             //_unitOfWork.Commit();
             //return _unitOfWork.CompanyRepository.GetById(company.Id);
@@ -149,13 +149,13 @@ namespace Twajd_Back_End.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCompany(Guid id)
         {
-            Company company = await _unitOfWork.CCompanyRepository.GetById(id);
+            Company company = await _unitOfWork.CompanyRepository.GetById(id);
             if (company == null)
             {
                 return NotFound();
             }
 
-            _unitOfWork.CCompanyRepository.Delete(id);
+            _unitOfWork.CompanyRepository.Delete(id);
             _unitOfWork.Commit();
             return Ok();
             //    var company = await _context.Companies.FindAsync(id);

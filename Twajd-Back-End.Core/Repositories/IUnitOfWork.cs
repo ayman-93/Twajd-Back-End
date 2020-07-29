@@ -4,9 +4,9 @@ namespace Twajd_Back_End.Core.Repositories
 {
     public interface IUnitOfWork
     {
-        IUserRepository UserRepository { get; }
-        ICompanyRepository CompanyRepository { get; }
-        IRepository<Company> CCompanyRepository { get; }
+        //IUserRepository UserRepository { get; }
+        //ICompanyRepository CompanyRepository { get; }
+        IRepository<Company> CompanyRepository { get; }
         IRepository<Employee> EmployeeRepository { get; }
         public void Commit();
         public void Rollback();
