@@ -8,6 +8,8 @@ namespace Twajd_Back_End.Core.Services
 {
     public interface IEmployeeService
     {
+        Task<IEnumerable<Employee>> GetEmployeesByCompanyId(Guid CompanyId);
+        Task<Employee> GetEmployeeByApplicationUserId(Guid applicationUserId);
         Task<Employee> GetEmployeeById(Guid Id);
         Task<Employee> AddEmployee(Employee entity);
 

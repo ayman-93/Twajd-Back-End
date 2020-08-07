@@ -11,7 +11,7 @@ namespace Twajd_Back_End.Core.Models
         // this should be remove it should be inside the package info.. m
         public int NumberOfEmployees { get; set; }
         public string PackageType { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         public DateTime subscriptionDate { get; set; }
 
         [ForeignKey("CompanyId")]

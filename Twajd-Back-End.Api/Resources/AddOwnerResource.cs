@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace Twajd_Back_End.Api.Resources
 {
-    public class UserSignUpResource
+    public class AddOwnerResource
     {
         public string Email { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string FullName { get; set; }
 
         public string Password { get; set; }
     }

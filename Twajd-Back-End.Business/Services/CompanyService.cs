@@ -29,11 +29,12 @@ namespace Twajd_Back_End.Business.Services
             _unitOfWork.CompanyRepository.Update(company);
             _unitOfWork.Commit();
         }
-        public async Task<Company> AddCompany(Company entity)
+        public async Task<Company> AddCompany(Company company)
         {
-            _unitOfWork.CompanyRepository.Insert(entity);
+            _unitOfWork.CompanyRepository.Insert(company);
             _unitOfWork.Commit();
-            return await _unitOfWork.CompanyRepository.GetById(entity.Id,includeProperties: "Employees");
+            return await _unitOfWork.CompanyRepository.GetById(company.Id);
+            //return await _unitOfWork.CompanyRepository.GetById(entity.Id,includeProperties: "Employees");
         }
 
         public async void Delete(Guid id)

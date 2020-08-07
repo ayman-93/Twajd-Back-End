@@ -11,7 +11,6 @@
     <None Remove="Models\Auth\ApplicationUser.cs~RF83ad59.TMP" />
     <None Remove="Models\Auth\ApplicationUser.cs~RFa1db40c.TMP" />
     <None Remove="Models\Employee.cs~RF78647e.TMP" />
-    <None Remove="Settings\JwtSettings.cs~RF9a1cdd9.TMP" />
   </ItemGroup>
 
   <ItemGroup>

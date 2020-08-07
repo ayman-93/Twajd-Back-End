@@ -99,6 +99,13 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("95356489-d70a-4f8f-9b9b-4e4f53e0b1b1"),
+                            RoleId = new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -229,6 +236,24 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("95356489-d70a-4f8f-9b9b-4e4f53e0b1b1"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "4d0bf24b-c311-4720-811f-152517f252a6",
+                            Email = "admin@twajd.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@TWAJD.COM",
+                            NormalizedUserName = "ADMIN@TWAJD.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAENQxzBGBKCDd0AqOx4vBFw60lso4uaVm9wKAtzEXeZ7KxNBFPArT0jzEMbhWc32iWQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "3S3U6NV6X44VGG2UIHFK4WPJOJSXAFIJ",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@twajd.com"
+                        });
                 });
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.Auth.Role", b =>
@@ -256,6 +281,29 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"),
+                            ConcurrencyStamp = "29ddeacf-4747-4858-89d1-330350a8cb07",
+                            Name = "Owner",
+                            NormalizedName = "OWNER"
+                        },
+                        new
+                        {
+                            Id = new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"),
+                            ConcurrencyStamp = "b0951e18-0f6f-46e6-8b86-6d5c7481c7e4",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"),
+                            ConcurrencyStamp = "af2a249a-5097-4eed-8f90-ec9ac542bd67",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE"
+                        });
                 });
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.Company", b =>

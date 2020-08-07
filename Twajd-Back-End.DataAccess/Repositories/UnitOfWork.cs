@@ -8,6 +8,8 @@ namespace Twajd_Back_End.DataAccess.Repositories
         private readonly DatabaseContext _databaseContext;
         //private IUserRepository _userRepository;
         //private ICompanyRepository _companyRepository;
+
+        private IRepository<Manager> _managerRepository;
         private IRepository<Company> _companyRepository;
         private IRepository<Employee> _employeeRepository;
         private IRepository<Location> _locationRepository;
@@ -27,6 +29,11 @@ namespace Twajd_Back_End.DataAccess.Repositories
         //{
         //    get { return _companyRepository = _companyRepository ?? new CompanyRepository(_databaseContext); }
         //}
+
+        public IRepository<Manager> ManagerRepository
+        {
+            get { return _managerRepository = _managerRepository ?? new Repository<Manager>(_databaseContext); }
+        }
 
         public IRepository<Company> CompanyRepository
         {

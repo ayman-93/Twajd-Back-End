@@ -12,7 +12,7 @@ namespace Twajd_Back_End.Core.Services
         Task<IEnumerable<Company>> Get();
         Task<Company> GetCompanyById(Guid Id);
         void UpdateComapny(Company company);
-        Task<Company> AddCompany(Company entity);
+        Task<Company> AddCompany(Company company);
         Task<IEnumerable<Employee>> GetEmployees(Guid CompanyId);
     }
 }

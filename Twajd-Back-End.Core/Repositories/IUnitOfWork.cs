@@ -6,6 +6,7 @@ namespace Twajd_Back_End.Core.Repositories
     {
         //IUserRepository UserRepository { get; }
         //ICompanyRepository CompanyRepository { get; }
+        IRepository<Manager> ManagerRepository { get; }
         IRepository<Company> CompanyRepository { get; }
         IRepository<Employee> EmployeeRepository { get; }
         public void Commit();

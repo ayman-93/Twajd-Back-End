@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Twajd_Back_End.Core.Models;
 using Twajd_Back_End.Core.Repositories;
@@ -23,7 +24,17 @@ namespace Twajd_Back_End.Business.Services
             return await _unitOfWork.EmployeeRepository.GetById(entity.Id);
         }
 
-        
+        public async Task<IEnumerable<Employee>> GetEmployeesByCompanyId(Guid CompanyId)
+        {
+            IEnumerable<Employee> employees = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.CompanyId == CompanyId);
+            return employees;
+        }
+
+        public async Task<Employee> GetEmployeeByApplicationUserId(Guid applicationUserId)
+        {
+            var employee = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.ApplicationUserId == applicationUserId);
+            return employee.FirstOrDefault();
+        }
 
         public async Task<Employee> GetEmployeeById(Guid Id)
         {

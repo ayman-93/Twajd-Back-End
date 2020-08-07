@@ -3,6 +3,9 @@ using System;
 using System.Threading.Tasks;
 using Twajd_Back_End.Core.Services;
 using Twajd_Back_End.Core.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Twajd_Back_End.Core.Models.Auth;
 
 namespace Twajd_Back_End.Controllers
 {
@@ -17,19 +20,24 @@ namespace Twajd_Back_End.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet("a/{id}")]
-        public async Task<Employee> GetEmployeeById(Guid id)
-        {
-            return await _employeeService.GetEmployeeById(id);
-        }
+        
 
         // POST: api/Companies
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        //[HttpPost]
+        //public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        //{
+        //    return await _employeeService.AddEmployee(employee);
+        //}
+
+        [HttpGet]
+        [Authorize(Roles = Role.Employee)]
+        public async Task<ActionResult<Employee>> GetEmployee()
         {
-            return await _employeeService.AddEmployee(employee);
+            Guid EmployeeApplicationUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Employee employee = await _employeeService.GetEmployeeByApplicationUserId(EmployeeApplicationUserId);
+            return employee;
         }
     }
 }
