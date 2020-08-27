@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace Twajd_Back_End.Api.Resources
 {
-    public class EmployeeLoginResponse
+    public class OwnerResource
     {
-        public string FullName { get; set; }
-        public string JobTitle { get; set; }
-        public string JobId { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public string Token { get; set; }
     }
 }

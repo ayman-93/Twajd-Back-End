@@ -14,7 +14,9 @@ namespace Twajd_Back_End.Core.Repositories
            string includeProperties = "");
         Task<T> GetById(Guid id);
         void Insert(T entity);
+        void InsertRange(T[] entity);
         void Update(T entity);
         void Delete(Guid id);
+        void DeleteRange(T[] entity);
     }
 }

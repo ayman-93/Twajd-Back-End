@@ -23,8 +23,8 @@ namespace Twajd_Back_End.Root
             DotNetEnv.Env.Load("../.env");
 
             services.AddDbContext<DatabaseContext>(p =>
-               //p.UseNpgsql(Configuration.GetConnectionString("Default")
-               p.UseNpgsql(System.Environment.GetEnvironmentVariable("ConnectionString")
+               p.UseNpgsql(Configuration.GetConnectionString("Default")
+               //p.UseNpgsql(System.Environment.GetEnvironmentVariable("ConnectionString")
                ));
 
 
@@ -33,6 +33,7 @@ namespace Twajd_Back_End.Root
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
+                options.Lockout.AllowedForNewUsers = true;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1d);
                 options.Lockout.MaxFailedAccessAttempts = 5;
             })
@@ -44,7 +45,6 @@ namespace Twajd_Back_End.Root
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
-            services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IManagerService, ManagerService>();
             services.AddTransient<ICompanyService, CompanyService>();
             services.AddTransient<IEmployeeService, EmployeeService>();

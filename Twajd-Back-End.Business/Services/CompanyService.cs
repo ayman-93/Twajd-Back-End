@@ -16,35 +16,34 @@ namespace Twajd_Back_End.Business.Services
             _unitOfWork = unitOfWork;
         }
 
-       //public IEnumerable<Company> GetAllCompanys() => _unitOfWork.CompanyRepository.GetComapnaiesWithEmployees();
+        public async void IncrementEmployeeNumber(Guid CompanyId)
+        {
+            Company company = await _unitOfWork.CompanyRepository.GetById(CompanyId);
+            company.NumberOfEmployees++;
+            //_unitOfWork.Commit();
+        }
+
+        public async void DecrementEmployeeNumber(Guid CompanyId)
+        {
+            Company company = await _unitOfWork.CompanyRepository.GetById(CompanyId);
+            company.NumberOfEmployees--;
+            //_unitOfWork.Commit();
+        }
 
         public async Task<IEnumerable<Company>> Get() => await _unitOfWork.CompanyRepository.Get(includeProperties: "Employees");
 
         public async Task<Company> GetCompanyById(Guid Id) => await _unitOfWork.CompanyRepository.GetById(Id, includeProperties: "Employees");
-        public void UpdateComapny(Company company) {
-            //Company dbComapny = await _unitOfWork.CCompanyRepository.GetById(company.Id);
-            //dbComapny = company;
-           // dbComapny.Update(company);
 
-            _unitOfWork.CompanyRepository.Update(company);
-            _unitOfWork.Commit();
-        }
-        public async Task<Company> AddCompany(Company company)
+        public async void Activate(Guid companyId)
         {
-            _unitOfWork.CompanyRepository.Insert(company);
-            _unitOfWork.Commit();
-            return await _unitOfWork.CompanyRepository.GetById(company.Id);
-            //return await _unitOfWork.CompanyRepository.GetById(entity.Id,includeProperties: "Employees");
+            Company company = await _unitOfWork.CompanyRepository.GetById(companyId);
+            company.IsActive = true;
         }
 
-        public async void Delete(Guid id)
+        public async void Deactivate(Guid companyId)
         {
-            Company company = await _unitOfWork.CompanyRepository.GetById(id);
-        }
-
-        public async Task<IEnumerable<Employee>> GetEmployees(Guid CompanyId)
-        {
-            return await _unitOfWork.EmployeeRepository.Get();
+            Company company = await _unitOfWork.CompanyRepository.GetById(companyId);
+            company.IsActive = false;
         }
     }
 }

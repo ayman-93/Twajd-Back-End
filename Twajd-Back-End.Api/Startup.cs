@@ -65,8 +65,8 @@ namespace Twajd_Back_End.Api
                 options.AddSecurityRequirement(security);
                 //c.EnableAnnotations();
 
-                //var filePath = Path.Combine(System.AppContext.BaseDirectory, "Twajd-Back-End.xml");
-                //c.IncludeXmlComments(filePath);
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "Twajd-Back-End.xml");
+                options.IncludeXmlComments(filePath);
             });
 
             services.AddAutoMapper(typeof(Startup));
@@ -106,17 +106,22 @@ namespace Twajd_Back_End.Api
                 //    name: "MyAreaServices",
                 //    areaName: "Services",
                 //    pattern: "Services/{controller=Home}/{action=Index}/{id?}");
-
+                
                 endpoints.MapControllers();
 
             });
 
-            app.UseSwagger();
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "twajd-api/swagger/{documentName}/swagger.json";
+                //c.RouteTemplate = "swagger/{documentName}/swagger.json";
+            });
 
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("swagger/v1/swagger.json", "API V1");
-                c.RoutePrefix = string.Empty;
+                c.RoutePrefix = "twajd-api";
+                //c.RoutePrefix = "";
             });
 
 

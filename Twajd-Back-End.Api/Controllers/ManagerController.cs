@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -12,68 +11,107 @@ using Twajd_Back_End.Core.Models;
 using Twajd_Back_End.Core.Models.Auth;
 using Twajd_Back_End.Core.Services;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Twajd_Back_End.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("twajd-api/[controller]")]
     [ApiController]
     public class ManagerController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IManagerService _managerService;
-        private readonly IEmployeeService _employeeService;
+        private readonly ICompanyService _companyService;
 
-        public ManagerController(IMapper mapper, UserManager<ApplicationUser> userManager
-            , IEmployeeService employeeService, IManagerService managerService)
+        public ManagerController(IMapper mapper, UserManager<ApplicationUser> userManager, IManagerService managerService,
+            ICompanyService companyService)
         {
             _mapper = mapper;
             _userManager = userManager;
             _managerService = managerService;
-            _employeeService = employeeService;
+            _companyService = companyService;
         }
 
-        //add employee
-        [HttpPost("add-employee")]
-        [Authorize(Roles = Role.Manager)]
-        public async Task<ActionResult<Employee>> CreateEmployee(AddEmployeeResource addEmployeeResource)
+        /// <summary>
+        /// Create company and assign a manager to it, used by owner.
+        /// </summary>
+        /// <param name="mangerResource">test param</param>
+        /// <returns>new manager</returns>
+        [HttpPost]
+        [Authorize(Roles = Role.Owner)]
+        public async Task<ActionResult> CreateManager(AddMangerResource mangerResource)
         {
-            Guid managerApplicationUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ApplicationUser user = _mapper.Map<AddMangerResource, ApplicationUser>(mangerResource);
+            Company company = _mapper.Map<AddMangerResource, Company>(mangerResource);
+            Manager manager = _mapper.Map<AddMangerResource, Manager>(mangerResource);
 
-            Manager manager = await _managerService.GetManagerByApplicationUserId(managerApplicationUserId);
-            
-            ApplicationUser employeeApplicationUser = _mapper.Map<AddEmployeeResource, ApplicationUser>(addEmployeeResource);
-
-            var userCreateResult = await _userManager.CreateAsync(employeeApplicationUser, addEmployeeResource.Password);
-
+            var userCreateResult = await _userManager.CreateAsync(user, mangerResource.Password);
             if (userCreateResult.Succeeded)
             {
-                await _userManager.AddToRoleAsync(employeeApplicationUser, Role.Employee);
-                Employee employee = _mapper.Map<AddEmployeeResource, Employee>(addEmployeeResource);
-                employee.ApplicationUserId = employeeApplicationUser.Id;
-                employee.CompanyId = manager.CompanyId;
-                return await _employeeService.AddEmployee(employee);
+                await _userManager.AddToRoleAsync(user, Role.Manager);
+                //await _companyService.AddCompany(company);
+                _managerService.addManagerAndCompany(manager, user.Id, company);
+                return StatusCode(201);
             }
 
-            return Problem(userCreateResult.Errors.First().Description, null, 500);
+            return Problem(userCreateResult.Errors.First().Description, null, 400);
         }
 
-        [HttpGet("Employees")]
-        [Authorize(Roles = Role.Owner + ", " + Role.Manager)]
-        public async Task<IEnumerable<Employee>> GetEmployees()
+        /// <summary>
+        /// Get All managers, used by owner.
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Owner)]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ManagerResource>>> GetManagers()
         {
-            Guid managerApplicationUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            Manager manager = await _managerService.GetManagerByApplicationUserId(managerApplicationUserId);
-            return await _employeeService.GetEmployeesByCompanyId(manager.CompanyId);
+            IEnumerable<Manager> managers = await _managerService.GetAll();
+            IEnumerable<ManagerResource> managerResources = _mapper.Map<IEnumerable<Manager>, IEnumerable<ManagerResource>>(managers);
+            return Ok(managerResources);
         }
 
-        [HttpGet("Employee/{id}")]
-        [Authorize(Roles = Role.Owner +", "+ Role.Manager)]
-        public async Task<Employee> GetEmployeeById(Guid id)
+        /// <summary>
+        /// Get manager, used by Owner
+        /// </summary>
+        /// <param name="id">Manager id</param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [Authorize(Roles = Role.Owner)]
+        public async Task<ActionResult<ManagerResource>> GetManagerById(Guid id)
         {
-            return await _employeeService.GetEmployeeById(id);
+            Manager manager = await _managerService.GetManagerById(id);
+            ManagerResource managerResource = _mapper.Map<Manager, ManagerResource>(manager);
+            return Ok(managerResource);
         }
+
+        /// <summary>
+        /// Deactivate the company and all of its users manager and employees, used by owner.
+        /// </summary>
+        /// <param name="id">Manager Id</param>
+        /// <returns>new manager</returns>
+        [HttpDelete("{id}")]
+        [Authorize(Roles = Role.Owner)]
+        public async Task<ActionResult> DeactivateManager(Guid id)
+        {
+            Manager manager = await _managerService.GetManagerById(id);
+
+            if (manager == null)
+            {
+                return NotFound();
+            }
+            Company company = await _companyService.GetCompanyById(manager.CompanyId);
+            IEnumerable<Employee> employees = company.Employees;
+            foreach (var emp in employees)
+            {
+                await _userManager.SetLockoutEnabledAsync(emp.ApplicationUser, true);
+                await _userManager.SetLockoutEndDateAsync(emp.ApplicationUser, Convert.ToDateTime("01/01/4000"));
+                //await _userManager.SetLockoutEndDateAsync(emp.ApplicationUser, DateTime.Now);
+            }
+            _companyService.Deactivate(company.Id);
+            await _userManager.SetLockoutEnabledAsync(manager.ApplicationUser, true);
+            await _userManager.SetLockoutEndDateAsync(manager.ApplicationUser, Convert.ToDateTime("01/01/4000"));
+
+            return Ok();
+        }
+
     }
 }

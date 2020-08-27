@@ -79,6 +79,13 @@ namespace Twajd_Back_End.DataAccess.Repositories
             dbSet.Add(entity);
             //context.SaveChanges();
         }
+
+        public void InsertRange(T[] entity)
+        {
+            if (entity == null) throw new ArgumentNullException("entity");
+            dbSet.AddRange(entity);
+            //context.SaveChanges();
+        }
         public void Update(T entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
@@ -91,6 +98,12 @@ namespace Twajd_Back_End.DataAccess.Repositories
 
             T entity = dbSet.SingleOrDefault(s => s.Id == id);
             dbSet.Remove(entity);
+            //context.SaveChanges();
+        }
+        public void DeleteRange(T[] entity)
+        {
+            if (entity == null) throw new ArgumentNullException("entity");
+            dbSet.RemoveRange(entity);
             //context.SaveChanges();
         }
     }

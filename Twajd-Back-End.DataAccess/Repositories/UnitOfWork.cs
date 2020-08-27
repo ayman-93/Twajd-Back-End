@@ -6,8 +6,6 @@ namespace Twajd_Back_End.DataAccess.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DatabaseContext _databaseContext;
-        //private IUserRepository _userRepository;
-        //private ICompanyRepository _companyRepository;
 
         private IRepository<Manager> _managerRepository;
         private IRepository<Company> _companyRepository;
@@ -19,16 +17,6 @@ namespace Twajd_Back_End.DataAccess.Repositories
         {
             _databaseContext = databaseContext;
         }
-
-        //public IUserRepository UserRepository
-        //{
-        //    get { return _userRepository = _userRepository ?? new UserRepository(_databaseContext); }
-        //}
-
-        //public ICompanyRepository CompanyRepository
-        //{
-        //    get { return _companyRepository = _companyRepository ?? new CompanyRepository(_databaseContext); }
-        //}
 
         public IRepository<Manager> ManagerRepository
         {

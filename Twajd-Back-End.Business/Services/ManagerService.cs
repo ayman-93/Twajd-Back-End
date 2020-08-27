@@ -17,10 +17,33 @@ namespace Twajd_Back_End.Business.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<IEnumerable<Manager>> GetAll()
+        {
+            IEnumerable<Manager> manager = await _unitOfWork.ManagerRepository.Get(includeProperties: "Company,ApplicationUser");
+            return manager;
+        }
+
         public async Task<Manager> GetManagerByApplicationUserId(Guid applicationUserId)
         {
-            var manager = await _unitOfWork.ManagerRepository.Get(filter: mang => mang.ApplicationUserId == applicationUserId);
+            var manager = await _unitOfWork.ManagerRepository.Get(filter: mang => mang.ApplicationUserId == applicationUserId, includeProperties: "Company,ApplicationUser");
             return manager.FirstOrDefault();
         }
+
+        public async Task<Manager> GetManagerById(Guid managerId)
+        {
+            var manager = await _unitOfWork.ManagerRepository.GetById(managerId, includeProperties: "Company,ApplicationUser");
+            return manager;
+        }
+
+        public void addManagerAndCompany(Manager manager, Guid applicationUserId, Company company)
+        {
+            manager.ApplicationUserId = applicationUserId;
+            _unitOfWork.CompanyRepository.Insert(company);
+            manager.CompanyId = company.Id;
+            _unitOfWork.ManagerRepository.Insert(manager);
+            _unitOfWork.Commit();
+        }
+
+        
     }
 }

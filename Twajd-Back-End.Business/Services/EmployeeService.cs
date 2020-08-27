@@ -17,11 +17,16 @@ namespace Twajd_Back_End.Business.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Employee> AddEmployee(Employee entity)
+        public void AddEmployee(Employee entity)
         {
             _unitOfWork.EmployeeRepository.Insert(entity);
             _unitOfWork.Commit();
-            return await _unitOfWork.EmployeeRepository.GetById(entity.Id);
+        }
+
+        public void AddEmployees(Employee[] entities)
+        {
+            _unitOfWork.EmployeeRepository.InsertRange(entities);
+            _unitOfWork.Commit();
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesByCompanyId(Guid CompanyId)
@@ -32,14 +37,26 @@ namespace Twajd_Back_End.Business.Services
 
         public async Task<Employee> GetEmployeeByApplicationUserId(Guid applicationUserId)
         {
-            var employee = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.ApplicationUserId == applicationUserId);
+            var employee = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.ApplicationUserId == applicationUserId, includeProperties: "Company,ApplicationUser");
             return employee.FirstOrDefault();
         }
 
         public async Task<Employee> GetEmployeeById(Guid Id)
         {
-            Employee employee = await _unitOfWork.EmployeeRepository.GetById(Id);
+            Employee employee = await _unitOfWork.EmployeeRepository.GetById(Id, includeProperties: "Company,ApplicationUser");
             return employee;
+        }
+
+        public void Update(Employee employee)
+        {
+            _unitOfWork.EmployeeRepository.Update(employee);
+            _unitOfWork.Commit();
+        }
+
+        public void DeleteEmployeeById(Guid employeeId)
+        {
+            _unitOfWork.EmployeeRepository.Delete(employeeId);
+            _unitOfWork.Commit();
         }
     }
 }
