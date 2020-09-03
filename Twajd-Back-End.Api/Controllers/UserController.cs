@@ -116,12 +116,14 @@ namespace Twajd_Back_End.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// invalidate user token.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
-            // not working now, i will add radis to make blcak list of tokens.
-            var authHeader = _httpContextAccessor.HttpContext.Request.Headers["authorization"];
-            await _signInManger.SignOutAsync();
+            await _authService.DeactivateCurrentAsync();
             return Ok();
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Twajd_Back_End.Api.Extensions;
+using Twajd_Back_End.Api.Middleware;
 using Twajd_Back_End.Core.Settings;
 using Twajd_Back_End.Root;
 
@@ -26,6 +28,11 @@ namespace Twajd_Back_End.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddStackExchangeRedisCache(opt =>
+            {
+                opt.Configuration = Configuration["redis:connectionString"];
+            });
+
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
 
@@ -64,14 +71,17 @@ namespace Twajd_Back_End.Api
                     };
                 options.AddSecurityRequirement(security);
                 //c.EnableAnnotations();
-
-                var filePath = Path.Combine(System.AppContext.BaseDirectory, "Twajd-Back-End.xml");
-                options.IncludeXmlComments(filePath);
+                var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, "Twajd-Back-End.xml");
+                options.IncludeXmlComments(xmlPath);
             });
 
             services.AddAutoMapper(typeof(Startup));
 
             services.AddAuth(jwtSettings);
+            services.AddTransient<TokenManagerMiddleware>();
+
 
         }
 
@@ -90,10 +100,11 @@ namespace Twajd_Back_End.Api
 
 
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseMiddleware<TokenManagerMiddleware>();
             app.UseAuth();
             app.UseEndpoints(endpoints =>
             {
