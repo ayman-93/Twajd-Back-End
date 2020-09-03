@@ -66,12 +66,17 @@ namespace Twajd_Back_End.Business.Services
             => await _cache.GetStringAsync(GetKey(token)) == null;
 
         public async Task DeactivateAsync(string token)
-            => await _cache.SetStringAsync(GetKey(token),
-                " ", new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow =
-                        TimeSpan.FromDays(_jwtSettings.ExpirationInDays)
-                });
+        {
+            if (!String.IsNullOrEmpty(token))
+            {
+                await _cache.SetStringAsync(GetKey(token),
+                    " ", new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow =
+                            TimeSpan.FromDays(_jwtSettings.ExpirationInDays)
+                    });
+            }
+        }
 
         private string GetCurrentAsync()
         {
