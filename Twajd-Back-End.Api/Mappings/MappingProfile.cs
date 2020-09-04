@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +8,7 @@ using System.Threading.Tasks;
 using Twajd_Back_End.Api.Resources;
 using Twajd_Back_End.Core.Models;
 using Twajd_Back_End.Core.Models.Auth;
+using Twajd_Back_End.Api.Helper;
 
 namespace Twajd_Back_End.Api.Mappings
 {
@@ -49,6 +52,28 @@ namespace Twajd_Back_End.Api.Mappings
                 .ForMember(empRes => empRes.PhoneNumber, opt => opt.MapFrom(emp => emp.ApplicationUser.PhoneNumber));
 
             CreateMap<EmployeeResource, Employee>();
+
+            // WorkHours
+            CreateMap<AddWorkHoursDayResource, WorkHoursDay>()
+                .ForMember(whd => whd.StartWork, opt => opt.MapFrom(whdr => Helpers.strToTimeSpan(whdr.StartWork)))
+                .ForMember(whd => whd.EndWork, opt => opt.MapFrom(whdr => Helpers.strToTimeSpan(whdr.EndWork)))
+                .ForMember(whd => whd.FlexibleHour, opt => opt.MapFrom(whdr => TimeSpan.FromHours(whdr.FlexibleHour)));
+            //.ForMember(wh => wh.StartWork, opt => opt.ConvertUsing<StringToTimeSpanConverter>())
+            //(whr => StringToTimeSpanConverter(whr.StartWork));
+
+            CreateMap<AddWorkHoursResource, WorkHours>();
+            CreateMap<WorkHours, AddWorkHoursResource>();
+
+
+            CreateMap<WorkHoursDay, WorkHoursDayResource>()
+                .ForMember(whdr => whdr.Day, opt => opt.MapFrom(whd => Enum.GetName(typeof(DayOfWeek), whd.Day)))
+                .ForMember(whdr => whdr.StartWork, opt => opt.MapFrom(whd => Helpers.TimeSpanToStr(whd.StartWork)))
+                .ForMember(whdr => whdr.EndWork, opt => opt.MapFrom(whd => Helpers.TimeSpanToStr(whd.EndWork)))
+                .ForMember(whdr => whdr.FlexibleHour, opt => opt.MapFrom(whd => whd.FlexibleHour.TotalHours));
+
+            CreateMap<WorkHours, WorkHoursResource>();
+
+            
         }
     }
 }

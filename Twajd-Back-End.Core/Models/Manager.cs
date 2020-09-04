@@ -17,6 +17,6 @@ namespace Twajd_Back_End.Core.Models
         public virtual Company Company { get; set; }
 
         [ForeignKey("ManagerId")]
-        public virtual ICollection<HourWork> HourWorks { get; set; }
+        public virtual ICollection<WorkHours> WorkHours { get; set; }
 }
 }

@@ -10,8 +10,8 @@ using Twajd_Back_End.DataAccess.Repositories;
 namespace Twajd_Back_End.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200807005756_firstMigration")]
-    partial class firstMigration
+    [Migration("20200904030910_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -288,21 +288,21 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"),
-                            ConcurrencyStamp = "29ddeacf-4747-4858-89d1-330350a8cb07",
+                            ConcurrencyStamp = "43f14da6-0fb8-45b0-8179-c83e42680640",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
                             Id = new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"),
-                            ConcurrencyStamp = "b0951e18-0f6f-46e6-8b86-6d5c7481c7e4",
+                            ConcurrencyStamp = "390b2ab1-7c45-4d09-9df8-1b74765fda71",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"),
-                            ConcurrencyStamp = "af2a249a-5097-4eed-8f90-ec9ac542bd67",
+                            ConcurrencyStamp = "13c6636b-df82-4ac9-9e75-0ec704807700",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -371,40 +371,6 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Twajd_Back_End.Core.Models.HourWork", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("EndWork")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("FlexibleHour")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("ManagerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartWork")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("day")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ManagerId");
-
-                    b.ToTable("HourWork");
-                });
-
             modelBuilder.Entity("Twajd_Back_End.Core.Models.Location", b =>
                 {
                     b.Property<Guid>("Id")
@@ -462,6 +428,59 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Manager");
+                });
+
+            modelBuilder.Entity("Twajd_Back_End.Core.Models.WorkHours", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("ManagerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("WorkHours");
+                });
+
+            modelBuilder.Entity("Twajd_Back_End.Core.Models.WorkHoursDay", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Day")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeSpan>("EndWork")
+                        .HasColumnType("interval");
+
+                    b.Property<TimeSpan>("FlexibleHour")
+                        .HasColumnType("interval");
+
+                    b.Property<Guid>("HourWorkId")
+                        .HasColumnType("uuid");
+
+                    b.Property<TimeSpan>("StartWork")
+                        .HasColumnType("interval");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HourWorkId");
+
+                    b.ToTable("WorkHoursDay");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -529,7 +548,7 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Twajd_Back_End.Core.Models.HourWork", null)
+                    b.HasOne("Twajd_Back_End.Core.Models.WorkHours", null)
                         .WithMany("Attendances")
                         .HasForeignKey("HourWorkId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -544,24 +563,15 @@ namespace Twajd_Back_End.DataAccess.Migrations
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.Employee", b =>
                 {
-                    b.HasOne("Twajd_Back_End.Core.Models.Auth.ApplicationUser", null)
+                    b.HasOne("Twajd_Back_End.Core.Models.Auth.ApplicationUser", "ApplicationUser")
                         .WithOne("Employee")
                         .HasForeignKey("Twajd_Back_End.Core.Models.Employee", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Twajd_Back_End.Core.Models.Company", null)
+                    b.HasOne("Twajd_Back_End.Core.Models.Company", "Company")
                         .WithMany("Employees")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Twajd_Back_End.Core.Models.HourWork", b =>
-                {
-                    b.HasOne("Twajd_Back_End.Core.Models.Manager", null)
-                        .WithMany("HourWorks")
-                        .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -577,15 +587,33 @@ namespace Twajd_Back_End.DataAccess.Migrations
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.Manager", b =>
                 {
-                    b.HasOne("Twajd_Back_End.Core.Models.Auth.ApplicationUser", null)
+                    b.HasOne("Twajd_Back_End.Core.Models.Auth.ApplicationUser", "ApplicationUser")
                         .WithOne("Manager")
                         .HasForeignKey("Twajd_Back_End.Core.Models.Manager", "ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Twajd_Back_End.Core.Models.Company", null)
+                    b.HasOne("Twajd_Back_End.Core.Models.Company", "Company")
                         .WithMany("Managers")
                         .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Twajd_Back_End.Core.Models.WorkHours", b =>
+                {
+                    b.HasOne("Twajd_Back_End.Core.Models.Manager", null)
+                        .WithMany("WorkHours")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Twajd_Back_End.Core.Models.WorkHoursDay", b =>
+                {
+                    b.HasOne("Twajd_Back_End.Core.Models.WorkHours", null)
+                        .WithMany("WorkHoursDays")
+                        .HasForeignKey("HourWorkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -104,8 +104,8 @@ namespace Twajd_Back_End.Api
 
             app.UseRouting();
 
-            app.UseMiddleware<TokenManagerMiddleware>();
             app.UseAuth();
+            app.UseMiddleware<TokenManagerMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapAreaControllerRoute(

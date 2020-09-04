@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Twajd_Back_End.DataAccess.Migrations
 {
-    public partial class firstMigration : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -250,23 +250,19 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HourWork",
+                name: "WorkHours",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    ManagerId = table.Column<Guid>(nullable: false),
-                    StartWork = table.Column<DateTime>(nullable: false),
-                    EndWork = table.Column<DateTime>(nullable: false),
-                    FlexibleHour = table.Column<DateTime>(nullable: false),
-                    day = table.Column<string>(nullable: true)
+                    ManagerId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HourWork", x => x.Id);
+                    table.PrimaryKey("PK_WorkHours", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HourWork_Manager_ManagerId",
+                        name: "FK_WorkHours_Manager_ManagerId",
                         column: x => x.ManagerId,
                         principalTable: "Manager",
                         principalColumn: "Id",
@@ -304,9 +300,9 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Attendance_HourWork_HourWorkId",
+                        name: "FK_Attendance_WorkHours_HourWorkId",
                         column: x => x.HourWorkId,
-                        principalTable: "HourWork",
+                        principalTable: "WorkHours",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -317,14 +313,37 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WorkHoursDay",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    HourWorkId = table.Column<Guid>(nullable: false),
+                    Day = table.Column<int>(nullable: false),
+                    StartWork = table.Column<TimeSpan>(nullable: false),
+                    EndWork = table.Column<TimeSpan>(nullable: false),
+                    FlexibleHour = table.Column<TimeSpan>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkHoursDay", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkHoursDay_WorkHours_HourWorkId",
+                        column: x => x.HourWorkId,
+                        principalTable: "WorkHours",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"), "29ddeacf-4747-4858-89d1-330350a8cb07", "Owner", "OWNER" },
-                    { new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"), "b0951e18-0f6f-46e6-8b86-6d5c7481c7e4", "Manager", "MANAGER" },
-                    { new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"), "af2a249a-5097-4eed-8f90-ec9ac542bd67", "Employee", "EMPLOYEE" }
+                    { new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"), "43f14da6-0fb8-45b0-8179-c83e42680640", "Owner", "OWNER" },
+                    { new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"), "390b2ab1-7c45-4d09-9df8-1b74765fda71", "Manager", "MANAGER" },
+                    { new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"), "13c6636b-df82-4ac9-9e75-0ec704807700", "Employee", "EMPLOYEE" }
                 });
 
             migrationBuilder.InsertData(
@@ -406,11 +425,6 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HourWork_ManagerId",
-                table: "HourWork",
-                column: "ManagerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Location_CompanyId",
                 table: "Location",
                 column: "CompanyId");
@@ -425,6 +439,16 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 name: "IX_Manager_CompanyId",
                 table: "Manager",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkHours_ManagerId",
+                table: "WorkHours",
+                column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkHoursDay_HourWorkId",
+                table: "WorkHoursDay",
+                column: "HourWorkId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -448,16 +472,19 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 name: "Attendance");
 
             migrationBuilder.DropTable(
+                name: "WorkHoursDay");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "HourWork");
+                name: "Location");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "WorkHours");
 
             migrationBuilder.DropTable(
                 name: "Manager");

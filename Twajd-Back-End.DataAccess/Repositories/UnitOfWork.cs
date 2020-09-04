@@ -10,6 +10,7 @@ namespace Twajd_Back_End.DataAccess.Repositories
         private IRepository<Manager> _managerRepository;
         private IRepository<Company> _companyRepository;
         private IRepository<Employee> _employeeRepository;
+        private IRepository<WorkHours> _workHoursRepository;
         private IRepository<Location> _locationRepository;
         private IRepository<Attendance> _attendanceRepository;
 
@@ -31,6 +32,10 @@ namespace Twajd_Back_End.DataAccess.Repositories
         public IRepository<Employee> EmployeeRepository
         {
             get { return _employeeRepository = _employeeRepository ?? new Repository<Employee>(_databaseContext); }
+        }
+        public IRepository<WorkHours> WorkHoursRepository
+        {
+            get { return _workHoursRepository = _workHoursRepository ?? new Repository<WorkHours>(_databaseContext); }
         }
 
         public IRepository<Location> LocationRepository
