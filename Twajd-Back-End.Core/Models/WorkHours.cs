@@ -10,7 +10,7 @@ namespace Twajd_Back_End.Core.Models
         public string Name { get; set; }
         [ForeignKey("HourWorkId")]
         public virtual ICollection<WorkHoursDay> WorkHoursDays { get; set; }
-        public Guid ManagerId { get; set; }
+        public virtual Guid CompanyId { get; set; }
         [ForeignKey("HourWorkId")]
         public virtual ICollection<Attendance> Attendances { get; set; }
     }

@@ -15,9 +15,9 @@ namespace Twajd_Back_End.Business.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IEnumerable<WorkHours>> Get(Guid managerId)
+        public async Task<IEnumerable<WorkHours>> Get(Guid companyId)
         {
-            return await _unitOfWork.WorkHoursRepository.Get(filter: wh => wh.ManagerId == managerId, includeProperties: "WorkHoursDays");
+            return await _unitOfWork.WorkHoursRepository.Get(filter: wh => wh.CompanyId == companyId, includeProperties: "WorkHoursDays");
         }
         public async Task<WorkHours> GetById(Guid WorkHoursId)
         {
@@ -42,5 +42,12 @@ namespace Twajd_Back_End.Business.Services
             _unitOfWork.WorkHoursRepository.Delete(workHoursId);
             _unitOfWork.Commit();
         }
+
+        //public async void AssaignEmployeeToWorkHour(Guid workHoursId, Guid EmployeeId)
+        //{
+        //    Employee employee = await _unitOfWork.EmployeeRepository.GetById(EmployeeId);
+        //    employee.WorkHours = await _unitOfWork.WorkHoursRepository.GetById(workHoursId);
+        //    _unitOfWork.Commit();
+        //}
     }
 }

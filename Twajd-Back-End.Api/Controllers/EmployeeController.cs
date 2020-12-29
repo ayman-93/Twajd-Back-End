@@ -159,7 +159,7 @@ namespace Twajd_Back_End.Controllers
         {
             Guid managerApplicationUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             Manager manager = await _managerService.GetManagerByApplicationUserId(managerApplicationUserId);
-            Employee employee = await _employeeService.GetEmployeeById(id);
+            Employee employee = await _employeeService.GetById(id);
             if (employee == null && employee.CompanyId != manager.CompanyId)
             {
                 return NotFound();
@@ -188,7 +188,7 @@ namespace Twajd_Back_End.Controllers
             }
 
             _employeeService.Update(employeeToUpdate);
-            Employee updatedEmployee = await _employeeService.GetEmployeeById(employee.Id);
+            Employee updatedEmployee = await _employeeService.GetById(employee.Id);
             EmployeeResource updatedEmployeeResource = _mapper.Map<Employee, EmployeeResource>(updatedEmployee);
             return Ok(updatedEmployeeResource);
 
@@ -208,7 +208,7 @@ namespace Twajd_Back_End.Controllers
 
             Manager manager = await _managerService.GetManagerByApplicationUserId(managerApplicationUserId);
 
-            Employee employee = await _employeeService.GetEmployeeById(id);
+            Employee employee = await _employeeService.GetById(id);
             if (employee == null && employee.CompanyId != manager.CompanyId)
             {
                 return NotFound();
@@ -238,7 +238,7 @@ namespace Twajd_Back_End.Controllers
 
             foreach (Guid id in employeesIds)
             {
-                Employee employee = await _employeeService.GetEmployeeById(id);
+                Employee employee = await _employeeService.GetById(id);
                 if (employee == null && employee.CompanyId != manager.CompanyId)
                 {
                     result.UnfoundUsers.Add(id);

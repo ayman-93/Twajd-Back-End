@@ -37,13 +37,13 @@ namespace Twajd_Back_End.Business.Services
 
         public async Task<Employee> GetEmployeeByApplicationUserId(Guid applicationUserId)
         {
-            var employee = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.ApplicationUserId == applicationUserId, includeProperties: "Company,ApplicationUser");
+            var employee = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.ApplicationUserId == applicationUserId, includeProperties: "Company,ApplicationUser,Location,WorkHours");
             return employee.FirstOrDefault();
         }
 
-        public async Task<Employee> GetEmployeeById(Guid Id)
+        public async Task<Employee> GetById(Guid employeeId)
         {
-            Employee employee = await _unitOfWork.EmployeeRepository.GetById(Id, includeProperties: "Company,ApplicationUser");
+            Employee employee = await _unitOfWork.EmployeeRepository.GetById(employeeId, includeProperties: "Company,ApplicationUser");
             return employee;
         }
 

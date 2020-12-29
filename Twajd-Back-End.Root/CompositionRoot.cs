@@ -49,6 +49,8 @@ namespace Twajd_Back_End.Root
             services.AddTransient<ICompanyService, CompanyService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IWorkHoursService, WorkHoursService>();
+            services.AddTransient<ILocationsService, LocationsService>();
+            services.AddTransient<IAttendanceService, AttendanceService>();
             services.AddTransient<IAuthService, AuthService>();
 
         }

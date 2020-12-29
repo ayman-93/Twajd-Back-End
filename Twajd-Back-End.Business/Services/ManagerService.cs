@@ -42,8 +42,6 @@ namespace Twajd_Back_End.Business.Services
             manager.CompanyId = company.Id;
             _unitOfWork.ManagerRepository.Insert(manager);
             _unitOfWork.Commit();
-        }
-
-        
+        }   
     }
 }

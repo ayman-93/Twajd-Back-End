@@ -10,7 +10,7 @@ using Twajd_Back_End.DataAccess.Repositories;
 namespace Twajd_Back_End.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200904030910_first")]
+    [Migration("20201229073254_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace Twajd_Back_End.DataAccess.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -288,21 +288,21 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"),
-                            ConcurrencyStamp = "43f14da6-0fb8-45b0-8179-c83e42680640",
+                            ConcurrencyStamp = "5415086e-5e0d-495f-ae86-580c35c845c8",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
                             Id = new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"),
-                            ConcurrencyStamp = "390b2ab1-7c45-4d09-9df8-1b74765fda71",
+                            ConcurrencyStamp = "4f28496f-40f0-4579-89e5-82cdbcbc28d0",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"),
-                            ConcurrencyStamp = "13c6636b-df82-4ac9-9e75-0ec704807700",
+                            ConcurrencyStamp = "1e17fc81-69e6-40af-b5ca-efa21660ce33",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -361,12 +361,22 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.Property<string>("JobTitle")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("LocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("WorkHoursId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("WorkHoursId");
 
                     b.ToTable("Employees");
                 });
@@ -392,12 +402,17 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<float>("radius")
-                        .HasColumnType("real");
+                    b.Property<Guid?>("managerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("radius")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("managerId");
 
                     b.ToTable("Location");
                 });
@@ -436,6 +451,9 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -446,6 +464,8 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("ManagerId");
 
@@ -574,6 +594,14 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Twajd_Back_End.Core.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
+                    b.HasOne("Twajd_Back_End.Core.Models.WorkHours", "WorkHours")
+                        .WithMany()
+                        .HasForeignKey("WorkHoursId");
                 });
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.Location", b =>
@@ -583,6 +611,10 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Twajd_Back_End.Core.Models.Manager", "manager")
+                        .WithMany()
+                        .HasForeignKey("managerId");
                 });
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.Manager", b =>
@@ -602,6 +634,12 @@ namespace Twajd_Back_End.DataAccess.Migrations
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.WorkHours", b =>
                 {
+                    b.HasOne("Twajd_Back_End.Core.Models.Company", null)
+                        .WithMany("WorkHours")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Twajd_Back_End.Core.Models.Manager", null)
                         .WithMany("WorkHours")
                         .HasForeignKey("ManagerId")

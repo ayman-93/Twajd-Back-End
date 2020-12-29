@@ -11,7 +11,8 @@ namespace Twajd_Back_End.Core.Models
         public Guid CompanyId { get; set; }
         public string Longitude { get; set; }
         public string Latitud { get; set; }
-        public float radius { get; set; }
+        public double radius { get; set; }
+        public virtual Manager manager { get; set; }
 
         [ForeignKey("LocationId")]
         public virtual ICollection<Attendance> Attendances { get; set; }

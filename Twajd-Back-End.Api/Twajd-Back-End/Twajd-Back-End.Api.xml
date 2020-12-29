@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Twajd-Back-End.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Twajd_Back_End.Api.Controllers.LocationsController.Get">
+            <summary>
+            Get all Work Hours, used by manager.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.LocationsController.Post(Twajd_Back_End.Api.Resources.AddLocationResource)">
+            <summary>
+            Create new Work Hours, used by manager.
+            StartWork and EndWork are strings: "1:01 AM" or "1:01 PM".
+            FlexibleHour is a double 1.5 mean 1 hour and 30 minutes.
+            </summary>
+            <param name="LocationRes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.LocationsController.Put(System.Guid,Twajd_Back_End.Api.Resources.AddLocationResource)">
+            <summary>
+            Update Work Hours, used by manager.
+            StartWork and EndWork are strings: "1:01 am" or "1:01 pm".
+            FlexibleHour is a double 1.5 mean 1 hour and 30 minutes.
+            </summary>
+            <param name="id"></param>
+            <param name="Location"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.LocationsController.Delete(System.Guid)">
+            <summary>
+            Delete Work Hours by id, used by manager.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.ManagerController.CreateManager(Twajd_Back_End.Api.Resources.AddMangerResource)">
+            <summary>
+            Create company and assign a manager to it, used by owner.
+            </summary>
+            <param name="mangerResource">test param</param>
+            <returns>new manager</returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.ManagerController.GetManagers">
+            <summary>
+            Get All managers, used by owner.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.ManagerController.GetManagerById(System.Guid)">
+            <summary>
+            Get manager, used by Owner
+            </summary>
+            <param name="id">Manager id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.ManagerController.DeactivateManager(System.Guid)">
+            <summary>
+            Deactivate the company and all of its users manager and employees, used by owner.
+            </summary>
+            <param name="id">Manager Id</param>
+            <returns>new manager</returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.OwnerController.CreateOwner(Twajd_Back_End.Api.Resources.AddOwnerResource)">
+            <summary>
+             new Owner, used by owner
+            </summary>
+            <param name="addOwnerResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.OwnerController.DeleteOwner(System.Guid)">
+            <summary>
+            Delete owner, used by another owner.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.UserController.Login(Twajd_Back_End.Api.Resources.UserLoginResource)">
+            <summary>
+            Login users, used by owner, manager or employee
+            </summary>
+            <param name="userLoginResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.UserController.ChangePassword(Twajd_Back_End.Api.Resources.ChangePasswordResource)">
+            <summary>
+            Change password, used by owner, manager or employee.
+            </summary>
+            <param name="changePasswordResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.UserController.Logout">
+            <summary>
+            invalidate user token.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.WorkHoursController.Get">
+            <summary>
+            Get all Work Hours, used by manager.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.WorkHoursController.Post(Twajd_Back_End.Api.Resources.AddWorkHoursResource)">
+            <summary>
+            Create new Work Hours, used by manager.
+            StartWork and EndWork are strings: "1:01 AM" or "1:01 PM".
+            FlexibleHour is a double 1.5 mean 1 hour and 30 minutes.
+            </summary>
+            <param name="workHours"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.WorkHoursController.Put(System.Guid,Twajd_Back_End.Api.Resources.AddWorkHoursResource)">
+            <summary>
+            Update Work Hours, used by manager.
+            StartWork and EndWork are strings: "1:01 am" or "1:01 pm".
+            FlexibleHour is a double 1.5 mean 1 hour and 30 minutes.
+            </summary>
+            <param name="id"></param>
+            <param name="workHours"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Api.Controllers.WorkHoursController.Delete(System.Guid)">
+            <summary>
+            Delete Work Hours by id, used by manager.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Controllers.EmployeeController.CreateEmployee(Twajd_Back_End.Api.Resources.AddEmployeeResource)">
+            <summary>
+            Add new employee by manager, used by manager
+            </summary>
+            <param name="addEmployeeResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Controllers.EmployeeController.CreateEmployees(Twajd_Back_End.Api.Resources.AddEmployeeResource[])">
+            <summary>
+            Add multiple employees, used by manager
+            </summary>
+            <param name="addEmployeeResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Controllers.EmployeeController.GetEmployees">
+            <summary>
+            Get all employees, used by manager.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Controllers.EmployeeController.GetEmployee(System.Guid)">
+            <summary>
+            get employee by id, used by manager.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Controllers.EmployeeController.UpdateEmployee(Twajd_Back_End.Api.Resources.EmployeeResource)">
+            <summary>
+            Update employee profile, used by employee.
+            </summary>
+            <param name="employeeResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Controllers.EmployeeController.DeleteEmployee(System.Guid)">
+            <summary>
+            Deactivate one employee by id, used by manager
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Twajd_Back_End.Controllers.EmployeeController.DeleteEmployees(System.Guid[])">
+            <summary>
+            Deactivate multiple employees, used by manager
+            </summary>
+            <param name="employeesIds"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

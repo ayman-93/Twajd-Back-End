@@ -73,6 +73,7 @@ namespace Twajd_Back_End.DataAccess.Repositories
         {
             return await dbSet.SingleOrDefaultAsync(s => s.Id == id);
         }
+
         public void Insert(T entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");

@@ -9,9 +9,9 @@ namespace Twajd_Back_End.Core.Models
     {
         public Guid EmployeeId { get; set; }
         public DateTime Date { get; set; }
-        public DateTime PresentTime { get; set; }
-        public DateTime DepartureTime { get; set; }
-        public Boolean Status { get; set; }
+        public TimeSpan PresentTime { get; set; }
+        public TimeSpan DepartureTime { get; set; }
+        public bool Status { get; set; }
         public Guid CompanyId { get; set; }
         public Guid LocationId { get; set; }
         public Guid HourWorkId { get; set; }

@@ -32,7 +32,7 @@ namespace Twajd_Back_End.Business.Services
 
         public async Task<IEnumerable<Company>> Get() => await _unitOfWork.CompanyRepository.Get(includeProperties: "Employees");
 
-        public async Task<Company> GetCompanyById(Guid Id) => await _unitOfWork.CompanyRepository.GetById(Id, includeProperties: "Employees");
+        public async Task<Company> GetCompanyById(Guid Id) => await _unitOfWork.CompanyRepository.GetById(Id, includeProperties: "Employees,Locations,WorkHours");
 
         public async void Activate(Guid companyId)
         {

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Twajd_Back_End.Api.Resources;
+using Twajd_Back_End.Core.Helper;
 using Twajd_Back_End.Core.Models;
 using Twajd_Back_End.Core.Models.Auth;
-using Twajd_Back_End.Api.Helper;
 
 namespace Twajd_Back_End.Api.Mappings
 {
@@ -49,7 +49,9 @@ namespace Twajd_Back_End.Api.Mappings
             CreateMap<Employee, EmployeeResource>()
                 .ForMember(empRes => empRes.CompanyName, opt => opt.MapFrom(emp => emp.Company.Name))
                 //.ForMember(empRes => empRes.Email, opt => opt.MapFrom(emp => emp.ApplicationUser.Email))
-                .ForMember(empRes => empRes.PhoneNumber, opt => opt.MapFrom(emp => emp.ApplicationUser.PhoneNumber));
+                .ForMember(empRes => empRes.PhoneNumber, opt => opt.MapFrom(emp => emp.ApplicationUser.PhoneNumber))
+                .ForMember(empRes => empRes.LocationName, opt => opt.MapFrom(emp => emp.Location.Name))
+                .ForMember(empRes => empRes.WorkHoursName, opt => opt.MapFrom(emp => emp.WorkHours.Name));
 
             CreateMap<EmployeeResource, Employee>();
 
@@ -73,6 +75,9 @@ namespace Twajd_Back_End.Api.Mappings
 
             CreateMap<WorkHours, WorkHoursResource>();
 
+            // Locations
+            CreateMap<Location, LocationResource>();
+            CreateMap<AddLocationResource, Location>();
             
         }
     }

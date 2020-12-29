@@ -14,6 +14,8 @@ namespace Twajd_Back_End.Api.Resources
         public string JobTitle { get; set; }
         public string JobId { get; set; }
         public string CompanyName { get; set; }
+        public string LocationName { get; set; }
+        public string WorkHoursName { get; set; }
         public string Token { get; set; }
     }
 }

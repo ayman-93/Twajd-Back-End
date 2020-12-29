@@ -8,10 +8,11 @@ namespace Twajd_Back_End.Core.Services
 {
     public interface IWorkHoursService
     {
-        Task<IEnumerable<WorkHours>> Get(Guid managerId);
+        Task<IEnumerable<WorkHours>> Get(Guid companyId);
         Task<WorkHours> GetById(Guid WorkHoursId);
         void AddWorkHours(WorkHours workHours);
         void Update(WorkHours workHours);
         void Delete(Guid workHoursId);
+        //void AssaignEmployeeToWorkHour(Guid workHoursId, Guid EmployeeId);
     }
 }

@@ -16,6 +16,9 @@ namespace Twajd_Back_End.Core.Models
         public Guid CompanyId { get; set; }
         public virtual Company Company { get; set; }
         public string JobId { get; set; }
+        public virtual WorkHours WorkHours { get; set; }
+        public virtual Location Location { get; set; }
+
         [ForeignKey("EmployeeId")]
         public virtual ICollection<Attendance> Attendances { get; set; }
     }

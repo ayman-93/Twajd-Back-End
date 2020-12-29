@@ -21,14 +21,8 @@ namespace Twajd_Back_End.Core.Models
         [ForeignKey("CompanyId")]
         public virtual ICollection<Location> Locations { get; set; }
         [ForeignKey("CompanyId")]
+        public virtual ICollection<WorkHours> WorkHours { get; set; }
+        [ForeignKey("CompanyId")]
         public virtual ICollection<Attendance> Attendances { get; set; }
-
-        public void Update(Company company)
-        {
-            this.Name = company?.Name ?? this.Name;
-            this.NumberOfEmployees = company?.NumberOfEmployees ?? this.NumberOfEmployees;
-            this.PackageType = company?.PackageType ?? this.PackageType;
-
-        }
     }
 }

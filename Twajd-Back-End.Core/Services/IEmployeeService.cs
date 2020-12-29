@@ -9,7 +9,7 @@ namespace Twajd_Back_End.Core.Services
     {
         Task<IEnumerable<Employee>> GetEmployeesByCompanyId(Guid CompanyId);
         Task<Employee> GetEmployeeByApplicationUserId(Guid applicationUserId);
-        Task<Employee> GetEmployeeById(Guid Id);
+        Task<Employee> GetById(Guid employeeId);
         void AddEmployee(Employee entity);
         void AddEmployees(Employee[] entity);
         void Update(Employee employee);

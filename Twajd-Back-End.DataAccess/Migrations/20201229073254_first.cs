@@ -171,58 +171,6 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    ApplicationUserId = table.Column<Guid>(nullable: false),
-                    FullName = table.Column<string>(nullable: true),
-                    JobTitle = table.Column<string>(nullable: true),
-                    CompanyId = table.Column<Guid>(nullable: false),
-                    JobId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Employees_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Location",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    CompanyId = table.Column<Guid>(nullable: false),
-                    Longitude = table.Column<string>(nullable: true),
-                    Latitud = table.Column<string>(nullable: true),
-                    radius = table.Column<float>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Location", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Location_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Manager",
                 columns: table => new
                 {
@@ -250,21 +198,124 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    CompanyId = table.Column<Guid>(nullable: false),
+                    Longitude = table.Column<string>(nullable: true),
+                    Latitud = table.Column<string>(nullable: true),
+                    radius = table.Column<double>(nullable: false),
+                    managerId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Location_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Location_Manager_managerId",
+                        column: x => x.managerId,
+                        principalTable: "Manager",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WorkHours",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    ManagerId = table.Column<Guid>(nullable: false)
+                    ManagerId = table.Column<Guid>(nullable: false),
+                    CompanyId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkHours", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_WorkHours_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_WorkHours_Manager_ManagerId",
                         column: x => x.ManagerId,
                         principalTable: "Manager",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<Guid>(nullable: false),
+                    FullName = table.Column<string>(nullable: true),
+                    JobTitle = table.Column<string>(nullable: true),
+                    CompanyId = table.Column<Guid>(nullable: false),
+                    JobId = table.Column<string>(nullable: true),
+                    WorkHoursId = table.Column<Guid>(nullable: true),
+                    LocationId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Employees_WorkHours_WorkHoursId",
+                        column: x => x.WorkHoursId,
+                        principalTable: "WorkHours",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkHoursDay",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    HourWorkId = table.Column<Guid>(nullable: false),
+                    Day = table.Column<int>(nullable: false),
+                    StartWork = table.Column<TimeSpan>(nullable: false),
+                    EndWork = table.Column<TimeSpan>(nullable: false),
+                    FlexibleHour = table.Column<TimeSpan>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkHoursDay", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkHoursDay_WorkHours_HourWorkId",
+                        column: x => x.HourWorkId,
+                        principalTable: "WorkHours",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -313,37 +364,14 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "WorkHoursDay",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    HourWorkId = table.Column<Guid>(nullable: false),
-                    Day = table.Column<int>(nullable: false),
-                    StartWork = table.Column<TimeSpan>(nullable: false),
-                    EndWork = table.Column<TimeSpan>(nullable: false),
-                    FlexibleHour = table.Column<TimeSpan>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkHoursDay", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkHoursDay_WorkHours_HourWorkId",
-                        column: x => x.HourWorkId,
-                        principalTable: "WorkHours",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"), "43f14da6-0fb8-45b0-8179-c83e42680640", "Owner", "OWNER" },
-                    { new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"), "390b2ab1-7c45-4d09-9df8-1b74765fda71", "Manager", "MANAGER" },
-                    { new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"), "13c6636b-df82-4ac9-9e75-0ec704807700", "Employee", "EMPLOYEE" }
+                    { new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"), "5415086e-5e0d-495f-ae86-580c35c845c8", "Owner", "OWNER" },
+                    { new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"), "4f28496f-40f0-4579-89e5-82cdbcbc28d0", "Manager", "MANAGER" },
+                    { new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"), "1e17fc81-69e6-40af-b5ca-efa21660ce33", "Employee", "EMPLOYEE" }
                 });
 
             migrationBuilder.InsertData(
@@ -425,9 +453,24 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employees_LocationId",
+                table: "Employees",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_WorkHoursId",
+                table: "Employees",
+                column: "WorkHoursId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Location_CompanyId",
                 table: "Location",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Location_managerId",
+                table: "Location",
+                column: "managerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Manager_ApplicationUserId",
@@ -438,6 +481,11 @@ namespace Twajd_Back_End.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Manager_CompanyId",
                 table: "Manager",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkHours_CompanyId",
+                table: "WorkHours",
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
