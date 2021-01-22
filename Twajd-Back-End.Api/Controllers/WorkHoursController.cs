@@ -65,7 +65,7 @@ namespace Twajd_Back_End.Api.Controllers
             WorkHours workHoursWeek = _mapper.Map<WorkHours>(workHours);
             workHoursWeek.CompanyId = manager.CompanyId;
             _workHoursService.AddWorkHours(workHoursWeek);
-            return Ok();
+            return Ok(new CustomMessge() { Message = "Work Hours created successfully." });
         }
 
         /// <summary>
@@ -85,17 +85,17 @@ namespace Twajd_Back_End.Api.Controllers
 
             WorkHours oldWorkHours = await _workHoursService.GetById(id);
 
-            if(oldWorkHours == null)
+            if (oldWorkHours == null)
             {
-                return NotFound();
+                return NotFound(new CustomMessge() { Message = "Work Hours not found" });
             }
 
-            if(oldWorkHours.CompanyId == manager.CompanyId)
+            if (oldWorkHours.CompanyId == manager.CompanyId)
             {
 
                 WorkHours workHoursToUpdate = _mapper.Map<AddWorkHoursResource, WorkHours>(workHours, oldWorkHours);
                 _workHoursService.Update(workHoursToUpdate);
-                return Ok();
+                return Ok(new CustomMessge() { Message = String.Format("{0} Work Hours update successfully.", workHoursToUpdate.Name) });
             }
             return Unauthorized();
         }
@@ -122,7 +122,7 @@ namespace Twajd_Back_End.Api.Controllers
             if (oldWorkHours.CompanyId == manager.CompanyId)
             {
                 _workHoursService.Delete(id);
-                return Ok();
+                return Ok(new CustomMessge() { Message = String.Format("Work Hours with id \"{0}\" deleted successfully.", id) });
             }
 
             return Unauthorized();
@@ -132,11 +132,20 @@ namespace Twajd_Back_End.Api.Controllers
         [Authorize(Roles = Role.Manager)]
         public async Task<ActionResult> AssignEmployee(Guid workHoursId, Guid EmpolyeeId)
         {
+            Guid managerApplicationUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            Manager manager = await _managerService.GetManagerByApplicationUserId(managerApplicationUserId);
             Employee employee = await _employeeService.GetById(EmpolyeeId);
-            employee.WorkHours = await _workHoursService.GetById(workHoursId);
-            _employeeService.Update(employee);
-            //_workHoursService.AssaignEmployeeToWorkHour(workHoursId, EmpolyeeId);
-            return Ok();
+
+            if (manager.CompanyId == employee.CompanyId)
+            {
+                employee.WorkHours = await _workHoursService.GetById(workHoursId);
+                _employeeService.Update(employee);
+                return Ok(new CustomMessge() { Message = String.Format("{0} is assignd to work hours {1}.", employee.FullName, employee.WorkHours.Name) });
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
     }

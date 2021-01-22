@@ -67,7 +67,7 @@ namespace Twajd_Back_End.Controllers
                 employee.CompanyId = manager.CompanyId;
                 _companyService.IncrementEmployeeNumber(manager.CompanyId);
                 _employeeService.AddEmployee(employee);
-                return StatusCode(201);
+                return Ok(new CustomMessge() { Message= String.Format("Employee {0} is created", employee.FullName) });
             }
 
             return Problem(userCreateResult.Errors.First().Description, null, 400);

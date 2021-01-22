@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Twajd_Back_End.Api.Resources;
 using Twajd_Back_End.Core.Models;
 using Twajd_Back_End.Core.Models.Auth;
@@ -50,10 +51,15 @@ namespace Twajd_Back_End.Api.Controllers
                 await _userManager.AddToRoleAsync(user, Role.Manager);
                 //await _companyService.AddCompany(company);
                 _managerService.addManagerAndCompany(manager, user.Id, company);
-                return StatusCode(201);
+                return Ok(new CustomMessge() { Message = String.Format("Manager {0}, for Company {1} is created Successfuly.", manager.FullName, company.Name) });
             }
 
-            return Problem(userCreateResult.Errors.First().Description, null, 400);
+            var errors = JsonConvert.SerializeObject(userCreateResult.Errors);
+
+            errors = "{ \"Errors\":" +
+                errors +
+                "}";
+            return BadRequest(errors);
         }
 
         /// <summary>
@@ -110,7 +116,7 @@ namespace Twajd_Back_End.Api.Controllers
             await _userManager.SetLockoutEnabledAsync(manager.ApplicationUser, true);
             await _userManager.SetLockoutEndDateAsync(manager.ApplicationUser, Convert.ToDateTime("01/01/4000"));
 
-            return Ok();
+            return Ok(new CustomMessge() { Message= "Manager and employees of this company are deactivated" });
         }
 
     }

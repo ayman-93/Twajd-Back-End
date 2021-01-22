@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Twajd_Back_End.Api.Resources;
 using Twajd_Back_End.Core.Models;
 using Twajd_Back_End.Core.Models.Auth;
@@ -13,6 +14,12 @@ using Twajd_Back_End.Core.Services;
 
 namespace Twajd_Back_End.Api.Controllers
 {
+    class identityErrors
+    {
+        public string Code { get; set; }
+        public string Description { get; set; }
+    }
+
     [Route("twajd-api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -43,6 +50,33 @@ namespace Twajd_Back_End.Api.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpGet("profile")]
+        public async Task<ActionResult> Profile()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest(new CustomMessge() { Message = "You are not loged in, try to login again" });
+            }
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains("Manager"))
+            {
+                Manager managerEntity = await _managerService.GetManagerByApplicationUserId(user.Id);
+                ManagerResource manager = _mapper.Map<Manager, ManagerResource>(managerEntity);
+                return Ok(manager);
+            }
+            else if (roles.Contains("Employee"))
+            {
+                Employee employeeEntity = await _employeeService.GetEmployeeByApplicationUserId(user.Id);
+                EmployeeResource employee = _mapper.Map<Employee, EmployeeResource>(employeeEntity);
+                return Ok(employee);
+            }
+            else
+            {
+                return BadRequest(new CustomMessge() { Message = "Sorry no profile for you." });
+            }
+        }
 
         /// <summary>
         /// Login users, used by owner, manager or employee
@@ -55,13 +89,13 @@ namespace Twajd_Back_End.Api.Controllers
             ApplicationUser user = _userManager.Users.SingleOrDefault(u => u.UserName == userLoginResource.Email.ToLowerInvariant());
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound(new CustomMessge() { Message = "User not found" });
             }
             var userSigninResult = await _signInManger.CheckPasswordSignInAsync(user, userLoginResource.Password, true);
 
             if (userSigninResult.IsLockedOut)
             {
-                return BadRequest("you are locked out");
+                return BadRequest(new CustomMessge() { Message = "you are locked out" });
             }
 
             if (userSigninResult.Succeeded)
@@ -92,7 +126,7 @@ namespace Twajd_Back_End.Api.Controllers
                 }
             }
 
-            return BadRequest("Email or password incorrect.");
+            return BadRequest(new CustomMessge() { Message = "Email or password incorrect." });
         }
 
         /// <summary>
@@ -105,14 +139,23 @@ namespace Twajd_Back_End.Api.Controllers
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                return BadRequest(new CustomMessge() { Message = "You are not loged in, try to login again" });
+            }
             var result = await _userManager.ChangePasswordAsync(user, changePasswordResource.OldPassword, changePasswordResource.NewPassword);
             if (result.Succeeded)
             {
-                return Ok();
+                return Ok(new CustomMessge() { Message = "Password Changed Successfully" });
             }
             else
             {
-                return BadRequest(result.Errors);
+                var errors = JsonConvert.SerializeObject(result.Errors);
+
+                errors = "{ \"Errors\":" +
+                    errors +
+                    "}";
+                return BadRequest(errors);
             }
         }
 
@@ -124,7 +167,7 @@ namespace Twajd_Back_End.Api.Controllers
         public async Task<ActionResult> Logout()
         {
             await _authService.DeactivateCurrentAsync();
-            return Ok();
+            return Ok(new CustomMessge() { Message = "You Are Loged out" });
         }
 
         

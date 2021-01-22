@@ -8,10 +8,9 @@ namespace Twajd_Back_End.Core.Services
 {
     public interface IAttendanceService
     {
-        Task<IEnumerable<Attendance>> GetCompanyId(Guid companyId);
-        Task<IEnumerable<Attendance>> GetByEmplyeeId(Guid employeeId);
-        Task<Location> GetById(Guid attendanceId);
         void AddAttendance(Attendance attendance);
+        Task<IEnumerable<Attendance>> GetByEmplyeeId(Guid employeeId);
+        Task<IEnumerable<Attendance>> GetByCompanyId(Guid CompanyId);
         void Update(Attendance attendance);
         //void Delete(Guid attendanceId);
     }

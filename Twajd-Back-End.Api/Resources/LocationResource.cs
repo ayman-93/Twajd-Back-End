@@ -13,4 +13,11 @@ namespace Twajd_Back_End.Api.Resources
         public string Latitud { get; set; }
         public float radius { get; set; }
     }
+    public class AddLocationResource
+    {
+        public string Name { get; set; }
+        public string Longitude { get; set; }
+        public string Latitud { get; set; }
+        public float radius { get; set; }
+    }
 }

@@ -13,12 +13,24 @@ namespace Twajd_Back_End.Api.Resources
         public string EndWork { get; set; }
         public double FlexibleHour { get; set; }
     }
-
     public class WorkHoursResource
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
 
         public IEnumerable<WorkHoursDayResource> WorkHoursDays { get; set; }
+    }
+    public class AddWorkHoursDayResource
+    {
+        public DayOfWeek Day { get; set; }
+        public string StartWork { get; set; }
+        public string EndWork { get; set; }
+        public double FlexibleHour { get; set; }
+    }
+    public class AddWorkHoursResource
+    {
+        public string Name { get; set; }
+
+        public IEnumerable<AddWorkHoursDayResource> WorkHoursDays { get; set; }
     }
 }

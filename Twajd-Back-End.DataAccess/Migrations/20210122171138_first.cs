@@ -234,8 +234,8 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    ManagerId = table.Column<Guid>(nullable: false),
-                    CompanyId = table.Column<Guid>(nullable: false)
+                    CompanyId = table.Column<Guid>(nullable: false),
+                    ManagerId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,7 +251,7 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         column: x => x.ManagerId,
                         principalTable: "Manager",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -327,9 +327,9 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     EmployeeId = table.Column<Guid>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    PresentTime = table.Column<DateTime>(nullable: false),
-                    DepartureTime = table.Column<DateTime>(nullable: false),
+                    UpdateAt = table.Column<DateTime>(nullable: false),
+                    PresentTime = table.Column<TimeSpan>(nullable: false),
+                    DepartureTime = table.Column<TimeSpan>(nullable: false),
                     Status = table.Column<bool>(nullable: false),
                     CompanyId = table.Column<Guid>(nullable: false),
                     LocationId = table.Column<Guid>(nullable: false),
@@ -369,9 +369,9 @@ namespace Twajd_Back_End.DataAccess.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"), "5415086e-5e0d-495f-ae86-580c35c845c8", "Owner", "OWNER" },
-                    { new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"), "4f28496f-40f0-4579-89e5-82cdbcbc28d0", "Manager", "MANAGER" },
-                    { new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"), "1e17fc81-69e6-40af-b5ca-efa21660ce33", "Employee", "EMPLOYEE" }
+                    { new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"), "bdf04103-4f7b-447a-aa0d-7531e6204bb2", "Owner", "OWNER" },
+                    { new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"), "da326f79-5f3d-42e1-8612-08b644d6d2f1", "Manager", "MANAGER" },
+                    { new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"), "a3adbbd1-9e5a-436a-9217-51a81b8edbdc", "Employee", "EMPLOYEE" }
                 });
 
             migrationBuilder.InsertData(

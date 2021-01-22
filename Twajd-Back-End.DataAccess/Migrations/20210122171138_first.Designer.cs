@@ -10,7 +10,7 @@ using Twajd_Back_End.DataAccess.Repositories;
 namespace Twajd_Back_End.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20201229073254_first")]
+    [Migration("20210122171138_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,11 +141,8 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<TimeSpan>("DepartureTime")
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
@@ -156,11 +153,14 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("PresentTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<TimeSpan>("PresentTime")
+                        .HasColumnType("interval");
 
                     b.Property<bool>("Status")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -288,21 +288,21 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"),
-                            ConcurrencyStamp = "5415086e-5e0d-495f-ae86-580c35c845c8",
+                            ConcurrencyStamp = "bdf04103-4f7b-447a-aa0d-7531e6204bb2",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
                             Id = new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"),
-                            ConcurrencyStamp = "4f28496f-40f0-4579-89e5-82cdbcbc28d0",
+                            ConcurrencyStamp = "da326f79-5f3d-42e1-8612-08b644d6d2f1",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"),
-                            ConcurrencyStamp = "1e17fc81-69e6-40af-b5ca-efa21660ce33",
+                            ConcurrencyStamp = "a3adbbd1-9e5a-436a-9217-51a81b8edbdc",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -457,7 +457,7 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("ManagerId")
+                    b.Property<Guid?>("ManagerId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -642,9 +642,7 @@ namespace Twajd_Back_End.DataAccess.Migrations
 
                     b.HasOne("Twajd_Back_End.Core.Models.Manager", null)
                         .WithMany("WorkHours")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ManagerId");
                 });
 
             modelBuilder.Entity("Twajd_Back_End.Core.Models.WorkHoursDay", b =>

@@ -37,7 +37,7 @@ namespace Twajd_Back_End.Business.Services
 
         public async Task<Employee> GetEmployeeByApplicationUserId(Guid applicationUserId)
         {
-            var employee = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.ApplicationUserId == applicationUserId, includeProperties: "Company,ApplicationUser,Location,WorkHours");
+            var employee = await _unitOfWork.EmployeeRepository.Get(filter: emp => emp.ApplicationUserId == applicationUserId, includeProperties: "Company,ApplicationUser,Location,WorkHours,Attendances");
             return employee.FirstOrDefault();
         }
 

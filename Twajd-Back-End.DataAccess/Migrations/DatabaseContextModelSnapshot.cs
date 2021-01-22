@@ -139,11 +139,8 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<TimeSpan>("DepartureTime")
+                        .HasColumnType("interval");
 
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uuid");
@@ -154,11 +151,14 @@ namespace Twajd_Back_End.DataAccess.Migrations
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("PresentTime")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<TimeSpan>("PresentTime")
+                        .HasColumnType("interval");
 
                     b.Property<bool>("Status")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -286,21 +286,21 @@ namespace Twajd_Back_End.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("7f5dc82f-22c7-4eb1-bba9-5c442f611f8c"),
-                            ConcurrencyStamp = "4ca2e9b7-0442-407f-8772-ebff5ff17fda",
+                            ConcurrencyStamp = "bdf04103-4f7b-447a-aa0d-7531e6204bb2",
                             Name = "Owner",
                             NormalizedName = "OWNER"
                         },
                         new
                         {
                             Id = new Guid("b59feb1b-4c4f-4b0e-99d8-349f2310b850"),
-                            ConcurrencyStamp = "4b90f9bf-4682-4666-afc6-1baea0362ab6",
+                            ConcurrencyStamp = "da326f79-5f3d-42e1-8612-08b644d6d2f1",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = new Guid("670e0b21-8f65-42a1-8bd1-f171b5580408"),
-                            ConcurrencyStamp = "a84991a4-fd96-47ed-ac01-070cc85ec0c4",
+                            ConcurrencyStamp = "a3adbbd1-9e5a-436a-9217-51a81b8edbdc",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });

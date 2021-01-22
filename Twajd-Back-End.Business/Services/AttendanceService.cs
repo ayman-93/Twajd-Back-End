@@ -3,35 +3,41 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Twajd_Back_End.Core.Models;
+using Twajd_Back_End.Core.Repositories;
 using Twajd_Back_End.Core.Services;
 
 namespace Twajd_Back_End.Business.Services
 {
     public class AttendanceService : IAttendanceService
     {
+        private IUnitOfWork _unitOfWork;
+
+        public AttendanceService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+        
         public void AddAttendance(Attendance attendance)
         {
-            throw new NotImplementedException();
+            _unitOfWork.AttendanceRepository.Insert(attendance);
+            _unitOfWork.Commit();
         }
 
-        public Task<IEnumerable<Attendance>> GetByEmplyeeId(Guid employeeId)
+        public async Task<IEnumerable<Attendance>> GetByEmplyeeId(Guid employeeId)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.AttendanceRepository.Get(filter: at => at.EmployeeId == employeeId);
         }
 
-        public Task<Location> GetById(Guid attendanceId)
+        public async Task<IEnumerable<Attendance>> GetByCompanyId(Guid CompanyId)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.AttendanceRepository.Get(filter: at => at.CompanyId == CompanyId);
         }
 
-        public Task<IEnumerable<Attendance>> GetCompanyId(Guid companyId)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Update(Attendance attendance)
         {
-            throw new NotImplementedException();
+            _unitOfWork.AttendanceRepository.Update(attendance);
+            _unitOfWork.Commit();
         }
     }
 }
