@@ -62,19 +62,33 @@ namespace Twajd_Back_End.Api.Controllers
                 var attendance = await _attendanceService.GetByEmplyeeId(emp.Id);
                 var atendRespon = _mapper.Map<IEnumerable<Attendance>, IEnumerable<PresentAndLeaveResource>>(attendance);
                 return Ok(atendRespon);
-            } else
+            }
+            else
             {
                 return BadRequest();
             }
 
         }
 
-        // GET api/<AttendanceController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        //GET api/<AttendanceController>/5
+        [Authorize(Roles = Role.Manager)]
+        [HttpGet("{employeeId}")]
+        public async Task<ActionResult<IEnumerable<PresentAndLeaveResource>>> Get(Guid employeeId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            Manager manager = await _managerService.GetManagerByApplicationUserId(user.Id);
+            var attendance = await _attendanceService.GetByEmplyeeId(employeeId);
+            if(attendance.FirstOrDefault().CompanyId == manager.CompanyId)
+            {
+            var atendRespon = _mapper.Map<IEnumerable<Attendance>, IEnumerable<PresentAndLeaveResource>>(attendance);
+            return Ok(atendRespon);
+            } else
+            {
+                return BadRequest();
+            }
+        }
 
         // POST api/<AttendanceController>
         [HttpPost]
@@ -100,6 +114,7 @@ namespace Twajd_Back_End.Api.Controllers
                         empAttend.Status = false;
                         empAttend.DepartureTime = DateTime.Now.TimeOfDay;
                         empAttend.UpdateAt = DateTime.Now;
+                        var test = (empAttend.CreatedAt - empAttend.UpdateAt).TotalHours;
                         _attendanceService.Update(empAttend);
                         var atendRespon = _mapper.Map<Attendance, PresentAndLeaveResource>(empAttend);
                         return Ok(atendRespon);

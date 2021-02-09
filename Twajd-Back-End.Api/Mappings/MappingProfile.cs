@@ -48,12 +48,13 @@ namespace Twajd_Back_End.Api.Mappings
 
             CreateMap<Employee, EmployeeResource>()
                 .ForMember(empRes => empRes.CompanyName, opt => opt.MapFrom(emp => emp.Company.Name))
-                //.ForMember(empRes => empRes.Email, opt => opt.MapFrom(emp => emp.ApplicationUser.Email))
+                .ForMember(empRes => empRes.Email, opt => opt.MapFrom(emp => emp.ApplicationUser.Email))
                 .ForMember(empRes => empRes.PhoneNumber, opt => opt.MapFrom(emp => emp.ApplicationUser.PhoneNumber))
                 .ForMember(empRes => empRes.LocationName, opt => opt.MapFrom(emp => emp.Location.Name))
                 .ForMember(empRes => empRes.WorkHoursName, opt => opt.MapFrom(emp => emp.WorkHours.Name))
                 .ForMember(empRes => empRes.Status, opt => opt.MapFrom(emp => emp.Attendances.LastOrDefault().Status))
-                .ForMember(empRes => empRes.LastSubmit, opt => opt.MapFrom(emp => emp.Attendances.LastOrDefault().UpdateAt));
+                .ForMember(empRes => empRes.LastSubmit, opt => opt.MapFrom(emp => emp.Attendances.LastOrDefault().UpdateAt))
+                .ForMember(empRes => empRes.SpendTime, opt => opt.MapFrom(emp => Helpers.strHoursBetweenTwoData(emp.Attendances.LastOrDefault().CreatedAt, emp.Attendances.LastOrDefault().UpdateAt, emp.Attendances.LastOrDefault().Status) ));
 
             CreateMap<EmployeeResource, Employee>();
 
@@ -84,7 +85,8 @@ namespace Twajd_Back_End.Api.Mappings
             // Attendance
             CreateMap<Attendance, PresentAndLeaveResource>()
                 .ForMember(atendRes => atendRes.PresentTime, opt => opt.MapFrom(atend => Helpers.TimeSpanToStr(atend.PresentTime)))
-                .ForMember(atendRes => atendRes.DepartureTime, opt => opt.MapFrom(atend => atend.Status?"": Helpers.TimeSpanToStr(atend.DepartureTime)));
+                .ForMember(atendRes => atendRes.DepartureTime, opt => opt.MapFrom(atend => atend.Status?"": Helpers.TimeSpanToStr(atend.DepartureTime)))
+                .ForMember(atendRes => atendRes.SpendTime, opt => opt.MapFrom(atend => Helpers.strHoursBetweenTwoData(atend.CreatedAt, atend.UpdateAt, atend.Status) ));
             
         }
     }

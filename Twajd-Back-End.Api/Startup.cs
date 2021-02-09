@@ -74,7 +74,7 @@ namespace Twajd_Back_End.Api
                 var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, "Twajd-Back-End.xml");
-                options.IncludeXmlComments(xmlPath);
+                // options.IncludeXmlComments(xmlPath);
             });
 
             services.AddAutoMapper(typeof(Startup));

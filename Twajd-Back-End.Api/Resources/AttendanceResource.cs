@@ -18,5 +18,6 @@ namespace Twajd_Back_End.Api.Resources
         public string PresentTime { get; set; }
         public string DepartureTime { get; set; }
         public bool Status { get; set; }
+        public string SpendTime { get; set; }
     }
 }

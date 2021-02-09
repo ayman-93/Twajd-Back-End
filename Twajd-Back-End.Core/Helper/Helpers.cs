@@ -8,6 +8,22 @@ namespace Twajd_Back_End.Core.Helper
 {
     public class Helpers
     {
+        public static string strHoursBetweenTwoData(DateTime start, DateTime end, bool noEndDate)
+        {
+            double minutes;
+            if (noEndDate)
+            {
+                minutes = (DateTime.Now - start).TotalMinutes;
+            } else
+            {
+                minutes = (end - start).TotalMinutes;
+            }
+            var timeSpan = TimeSpan.FromMinutes(minutes);
+            int hh = timeSpan.Hours;
+            int mm = timeSpan.Minutes;
+            int ss = timeSpan.Seconds;
+            return String.Format("{0}:{1}:{2}", hh, mm, ss);
+        }
         public static TimeSpan strToTimeSpan(string time)
         {
             string[] formats = { "hhmm", "hmm", @"hh\:mm", @"h\:mm\:ss", @"h:mm", @"h:mm tt" };

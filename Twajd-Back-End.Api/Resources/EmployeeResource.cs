@@ -10,7 +10,7 @@ namespace Twajd_Back_End.Api.Resources
     {
         public Guid Id { get; set; }
         public string FullName { get; set; }
-        //public string Email { get; set; }
+        public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string JobTitle { get; set; }
         public string JobId { get; set; }
@@ -19,6 +19,7 @@ namespace Twajd_Back_End.Api.Resources
         public string WorkHoursName { get; set; }
         public bool Status { get; set; }
         public string LastSubmit { get; set; }
+        public string SpendTime { get; set; }
         public string Token { get; set; }
     }
     public class AddEmployeeResource
