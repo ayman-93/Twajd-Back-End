@@ -51,6 +51,7 @@ namespace Twajd_Back_End.Api.Mappings
                 .ForMember(empRes => empRes.Email, opt => opt.MapFrom(emp => emp.ApplicationUser.Email))
                 .ForMember(empRes => empRes.PhoneNumber, opt => opt.MapFrom(emp => emp.ApplicationUser.PhoneNumber))
                 .ForMember(empRes => empRes.LocationName, opt => opt.MapFrom(emp => emp.Location.Name))
+                .ForMember(empRes => empRes.LocationRadius, opt => opt.MapFrom(emp => emp.Location.radius))
                 .ForMember(empRes => empRes.WorkHoursName, opt => opt.MapFrom(emp => emp.WorkHours.Name))
                 .ForMember(empRes => empRes.Status, opt => opt.MapFrom(emp => emp.Attendances.LastOrDefault().Status))
                 .ForMember(empRes => empRes.LastSubmit, opt => opt.MapFrom(emp => emp.Attendances.LastOrDefault().UpdateAt))

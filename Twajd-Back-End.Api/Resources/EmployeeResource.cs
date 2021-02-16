@@ -16,6 +16,7 @@ namespace Twajd_Back_End.Api.Resources
         public string JobId { get; set; }
         public string CompanyName { get; set; }
         public string LocationName { get; set; }
+        public double LocationRadius { get; set; }
         public string WorkHoursName { get; set; }
         public bool Status { get; set; }
         public string LastSubmit { get; set; }
