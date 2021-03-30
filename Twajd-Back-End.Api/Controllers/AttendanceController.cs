@@ -16,7 +16,7 @@ using Twajd_Back_End.Core.Services;
 
 namespace Twajd_Back_End.Api.Controllers
 {
-    [Route("twajd-api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AttendanceController : ControllerBase
     {
@@ -40,7 +40,10 @@ namespace Twajd_Back_End.Api.Controllers
         }
 
 
-        // GET: api/<AttendanceController>
+        /// <summary>
+        /// Get all attendances of the employee or all attendances of employees depends on the user, used by manager and employee
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = Role.Employee + "," + Role.Manager)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PresentAndLeaveResource>>> Get()
@@ -61,7 +64,8 @@ namespace Twajd_Back_End.Api.Controllers
                 Employee emp = await _employeeService.GetEmployeeByApplicationUserId(user.Id);
                 var attendance = await _attendanceService.GetByEmplyeeId(emp.Id);
                 var atendRespon = _mapper.Map<IEnumerable<Attendance>, IEnumerable<PresentAndLeaveResource>>(attendance);
-                return Ok(atendRespon);
+                var withKey = _mapper.Map<PresentAndLeaveResourceArray>(atendRespon);
+                return Ok(withKey);
             }
             else
             {
@@ -70,7 +74,11 @@ namespace Twajd_Back_End.Api.Controllers
 
         }
 
-        //GET api/<AttendanceController>/5
+        /// <summary>
+        /// Get an employee attendance by employee id, used by manager.
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
         [Authorize(Roles = Role.Manager)]
         [HttpGet("{employeeId}")]
         public async Task<ActionResult<IEnumerable<PresentAndLeaveResource>>> Get(Guid employeeId)
@@ -90,7 +98,11 @@ namespace Twajd_Back_End.Api.Controllers
             }
         }
 
-        // POST api/<AttendanceController>
+        /// <summary>
+        /// Attend of Leave depends on the status of the user, used by employee.
+        /// </summary>
+        /// <param name="attendanceResource"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = Role.Employee)]
         public async Task<ActionResult> Post(AttendanceResource attendanceResource)
@@ -157,16 +169,5 @@ namespace Twajd_Back_End.Api.Controllers
             }
         }
 
-        // PUT api/<AttendanceController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<AttendanceController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

@@ -90,5 +90,31 @@ namespace Twajd_Back_End.Business.Services
 
         private static string GetKey(string token)
             => $"tokens:{token}:deactivated";
+
+        public async Task setEmailOtpToken(string otpKey, string resetPassToken)
+        {
+            if (!String.IsNullOrEmpty(resetPassToken))
+            {
+                await _cache.SetStringAsync(otpKey,
+                    resetPassToken, new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow =
+                            TimeSpan.FromDays(1)
+                    });
+            }
+        }
+
+        public async Task<string> getEmialOtpToken(string otpKey)
+        {
+            if (!String.IsNullOrEmpty(otpKey))
+            {
+                return await _cache.GetStringAsync(otpKey);
+            }
+            else
+            {
+                return String.Empty;
+            }
+        }
+
     }
 }

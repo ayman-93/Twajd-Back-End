@@ -21,7 +21,10 @@ namespace Twajd_Back_End.Api.Resources
         public bool Status { get; set; }
         public string LastSubmit { get; set; }
         public string SpendTime { get; set; }
+        public string lat { get; set; }
+        public string lng { get; set; }
         public string Token { get; set; }
+        public double Version { get; set; }
     }
     public class AddEmployeeResource
     {

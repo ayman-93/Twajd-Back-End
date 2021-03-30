@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -20,7 +22,7 @@ namespace Twajd_Back_End.Api.Controllers
         public string Description { get; set; }
     }
 
-    [Route("twajd-api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -30,6 +32,7 @@ namespace Twajd_Back_End.Api.Controllers
         private readonly IAuthService _authService;
         private readonly IManagerService _managerService;
         private readonly IEmployeeService _employeeService;
+        private readonly IMailer _mailer;
         private IHttpContextAccessor _httpContextAccessor;
         public UserController(
             IAuthService authService,
@@ -38,6 +41,7 @@ namespace Twajd_Back_End.Api.Controllers
             SignInManager<ApplicationUser> signInManager,
             IManagerService managerService,
             IEmployeeService employeeService,
+            IMailer mailer,
             IHttpContextAccessor httpContextAccessor
             )
         {
@@ -47,9 +51,14 @@ namespace Twajd_Back_End.Api.Controllers
             _authService = authService;
             _managerService = managerService;
             _employeeService = employeeService;
+            _mailer = mailer;
             _httpContextAccessor = httpContextAccessor;
         }
 
+        /// <summary>
+        /// Get logged in user profile
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("profile")]
         public async Task<ActionResult> Profile()
         {
@@ -68,6 +77,10 @@ namespace Twajd_Back_End.Api.Controllers
             }
             else if (roles.Contains("Employee"))
             {
+                //if (version < 1.0)
+                //{
+                //    return BadRequest(new CustomMessge() { Message = "You Can't login, Please update the application" });
+                //}
                 Employee employeeEntity = await _employeeService.GetEmployeeByApplicationUserId(user.Id);
                 EmployeeResource employee = _mapper.Map<Employee, EmployeeResource>(employeeEntity);
                 return Ok(employee);
@@ -106,12 +119,20 @@ namespace Twajd_Back_End.Api.Controllers
 
                 if (roles.Contains("Owner"))
                 {
+                    if (userLoginResource.IsMobile)
+                    {
+                        return BadRequest(new CustomMessge() { Message = "You Can't login from mobile" });
+                    }
                     OwnerResource owner = _mapper.Map<ApplicationUser, OwnerResource>(user);
                     owner.Token = token;
                     return Ok(owner);
                 }
                 else if (roles.Contains("Manager"))
                 {
+                    if (userLoginResource.IsMobile)
+                    {
+                        return BadRequest(new CustomMessge() { Message = "You Can't login from mobile" });
+                    }
                     Manager managerEntity = await _managerService.GetManagerByApplicationUserId(user.Id);
                     ManagerResource manager = _mapper.Map<Manager, ManagerResource>(managerEntity);
                     manager.Token = token;
@@ -127,6 +148,75 @@ namespace Twajd_Back_End.Api.Controllers
             }
 
             return BadRequest(new CustomMessge() { Message = "Email or password incorrect." });
+        }
+
+        /// <summary>
+        /// Request otp key to reset password it will send the otp key to email, step 1.
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <returns></returns>
+        [HttpGet("forgetPassword")]
+        public async Task<IActionResult> PasswordResetToken(string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if(user == null)
+            {
+                return BadRequest(new CustomMessge() { Message = "Email not exist" });
+            }
+
+            var reseToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var otpKey = new Random().Next(100000, 1000000).ToString();
+            await _authService.setEmailOtpToken(otpKey, reseToken);
+
+            //string url = string.Format("{0}://{1}/api/User/resetPassword?{2}", _httpContextAccessor.HttpContext.Request.Scheme, _httpContextAccessor.HttpContext.Request.Host.Value, resetParams);
+            
+
+            string msg = string.Format("please use this key {0} to reset the password.", otpKey);
+            await _mailer.SendEmailAsync("mr.aymoone@gmail.com", "Reset Password", msg);
+
+            return Ok(new CustomMessge() { Message = "A password reset key was sent, valid for 1 day." });
+        }
+
+        /// <summary>
+        /// request the reset password token by using the otp key, step 2.
+        /// </summary>
+        /// <param name="otpKey"></param>
+        /// <returns></returns>
+        [HttpGet("resetPasswordToken")]
+        public async Task<IActionResult> ResetPasswordToken(string otpKey)
+        {
+            string resetPasswordToken = await _authService.getEmialOtpToken(otpKey);
+            if (String.IsNullOrEmpty(resetPasswordToken))
+            {
+                return BadRequest(new CustomMessge() { Message = "Wrong OTP key" });
+            }
+            return Ok(new ResetPasswordTokenResource(){ ResetPasswordToken = resetPasswordToken });
+        }
+
+        /// <summary>
+        /// reset password, step 3.
+        /// </summary>
+        /// <param name="resetPasswordResource"></param>
+        /// <returns></returns>
+        [HttpPut("resetPassword")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordResource resetPasswordResource)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(resetPasswordResource.Email);
+            
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordResource.RestPasswordToken, resetPasswordResource.NewPassword);
+            if (result.Succeeded)
+            {
+                return Ok(new CustomMessge() { Message = "Password Changed Successfully" });
+            }
+            else
+            {
+                var errors = JsonConvert.SerializeObject(result.Errors);
+
+                errors = "{ \"Errors\":" +
+                    errors +
+                    "}";
+                return BadRequest(errors);
+            }
         }
 
         /// <summary>

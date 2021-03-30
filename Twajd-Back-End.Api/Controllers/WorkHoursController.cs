@@ -15,7 +15,7 @@ using Twajd_Back_End.Core.Services;
 
 namespace Twajd_Back_End.Api.Controllers
 {
-    [Route("twajd-api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class WorkHoursController : ControllerBase
     {

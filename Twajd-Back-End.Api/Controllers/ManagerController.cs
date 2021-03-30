@@ -14,7 +14,7 @@ using Twajd_Back_End.Core.Services;
 
 namespace Twajd_Back_End.Api.Controllers
 {
-    [Route("twajd-api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ManagerController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace Twajd_Back_End.Api.Controllers
         }
 
         /// <summary>
-        /// Create company and assign a manager to it, used by owner.
+        /// Create a company and assign a manager to it, used by owner.
         /// </summary>
         /// <param name="mangerResource">test param</param>
         /// <returns>new manager</returns>
@@ -76,7 +76,7 @@ namespace Twajd_Back_End.Api.Controllers
         }
 
         /// <summary>
-        /// Get manager, used by Owner
+        /// Get a manager by id, used by Owner
         /// </summary>
         /// <param name="id">Manager id</param>
         /// <returns></returns>
@@ -90,7 +90,7 @@ namespace Twajd_Back_End.Api.Controllers
         }
 
         /// <summary>
-        /// Deactivate the company and all of its users manager and employees, used by owner.
+        /// Deactivate the company and all of its users manager and employees by manager id, used by owner.
         /// </summary>
         /// <param name="id">Manager Id</param>
         /// <returns>new manager</returns>

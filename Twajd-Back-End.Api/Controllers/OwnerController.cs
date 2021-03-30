@@ -10,7 +10,7 @@ using Twajd_Back_End.Core.Models.Auth;
 
 namespace Twajd_Back_End.Api.Controllers
 {
-    [Route("twajd-api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class OwnerController : ControllerBase
     {

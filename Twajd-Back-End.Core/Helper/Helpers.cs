@@ -68,7 +68,7 @@ namespace Twajd_Back_End.Core.Helper
                 //    dist = dist * 0.8684;
                 //}
                 dist = dist * 1.609344;
-                return (dist);
+                return (dist*1000);
             }
         }
 

@@ -72,9 +72,10 @@ namespace Twajd_Back_End.Api
                 options.AddSecurityRequirement(security);
                 //c.EnableAnnotations();
                 var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                var xmlPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),xmlFile);
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, "Twajd-Back-End.xml");
-                // options.IncludeXmlComments(xmlPath);
+                options.IncludeXmlComments(xmlPath);
             });
 
             services.AddAutoMapper(typeof(Startup));
@@ -82,6 +83,7 @@ namespace Twajd_Back_End.Api
             services.AddAuth(jwtSettings);
             services.AddTransient<TokenManagerMiddleware>();
 
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
 
         }
 
@@ -124,14 +126,14 @@ namespace Twajd_Back_End.Api
 
             app.UseSwagger(c =>
             {
-                c.RouteTemplate = "twajd-api/swagger/{documentName}/swagger.json";
+                c.RouteTemplate = "api/swagger/{documentName}/swagger.json";
                 //c.RouteTemplate = "swagger/{documentName}/swagger.json";
             });
 
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("swagger/v1/swagger.json", "API V1");
-                c.RoutePrefix = "twajd-api";
+                c.RoutePrefix = "api";
                 //c.RoutePrefix = "";
             });
 

@@ -15,7 +15,7 @@ using Twajd_Back_End.Core.Services;
 
 namespace Twajd_Back_End.Api.Controllers
 {
-    [Route("twajd-api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LocationsController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace Twajd_Back_End.Api.Controllers
         }
 
         /// <summary>
-        /// Get all Work Hours, used by manager.
+        /// Get all Locations, used by manager.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -49,9 +49,7 @@ namespace Twajd_Back_End.Api.Controllers
 
 
         /// <summary>
-        /// Create new Work Hours, used by manager.
-        /// StartWork and EndWork are strings: "1:01 AM" or "1:01 PM".
-        /// FlexibleHour is a double 1.5 mean 1 hour and 30 minutes.
+        /// Add a new location, used by manager.
         /// </summary>
         /// <param name="LocationRes"></param>
         /// <returns></returns>
@@ -65,15 +63,13 @@ namespace Twajd_Back_End.Api.Controllers
             Location location = _mapper.Map<Location>(LocationRes);
             location.manager = manager;
             location.CompanyId = manager.CompanyId;
-            var test = location;
             _locationService.AddLocation(location);
             return Ok();
         }
 
         /// <summary>
-        /// Update Work Hours, used by manager.
-        /// StartWork and EndWork are strings: "1:01 am" or "1:01 pm".
-        /// FlexibleHour is a double 1.5 mean 1 hour and 30 minutes.
+        /// Update a location, used by manager.
+        /// location radius is by maters.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="Location"></param>
@@ -103,7 +99,7 @@ namespace Twajd_Back_End.Api.Controllers
         }
 
         /// <summary>
-        /// Delete Work Hours by id, used by manager.
+        /// Delete a location by id, used by manager.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -130,6 +126,12 @@ namespace Twajd_Back_End.Api.Controllers
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Add an empolyee to a location by locationId and employeeId
+        /// </summary>
+        /// <param name="EmpolyeeId"></param>
+        /// <param name="LocationId"></param>
+        /// <returns></returns>
         [HttpPost("Add-employee")]
         [Authorize(Roles = Role.Manager)]
         public async Task<ActionResult> AssignEmployee(Guid EmpolyeeId, Guid LocationId)

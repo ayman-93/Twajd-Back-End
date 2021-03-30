@@ -15,5 +15,7 @@ namespace Twajd_Back_End.Core.Services
         Task DeactivateCurrentAsync();
         Task<bool> IsActiveAsync(string token);
         Task DeactivateAsync(string token);
+        Task setEmailOtpToken(string otpKey, string resetPassToken);
+        Task<string> getEmialOtpToken(string otpKey);
     }
 }

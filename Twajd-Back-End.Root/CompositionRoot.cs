@@ -52,7 +52,7 @@ namespace Twajd_Back_End.Root
             services.AddTransient<ILocationsService, LocationsService>();
             services.AddTransient<IAttendanceService, AttendanceService>();
             services.AddTransient<IAuthService, AuthService>();
-
+            services.AddSingleton<IMailer, Mailer>();
         }
     }
 }

@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Twajd_Back_End.Controllers
 {
-    [Route("twajd-api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : Controller
     {
@@ -42,7 +42,7 @@ namespace Twajd_Back_End.Controllers
 
 
         /// <summary>
-        /// Add new employee by manager, used by manager
+        /// Add a new employee, used by manager
         /// </summary>
         /// <param name="addEmployeeResource"></param>
         /// <returns></returns>
@@ -149,7 +149,7 @@ namespace Twajd_Back_End.Controllers
         }
 
         /// <summary>
-        /// get employee by id, used by manager.
+        /// get an employee by id, used by manager.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -170,7 +170,7 @@ namespace Twajd_Back_End.Controllers
         }
 
         /// <summary>
-        /// Update employee profile, used by employee.
+        /// Update an employee profile, used by employee.
         /// </summary>
         /// <param name="employeeResource"></param>
         /// <returns></returns>

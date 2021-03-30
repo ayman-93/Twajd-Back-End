@@ -20,4 +20,9 @@ namespace Twajd_Back_End.Api.Resources
         public bool Status { get; set; }
         public string SpendTime { get; set; }
     }
+
+    public class PresentAndLeaveResourceArray
+    {
+        public IEnumerable<PresentAndLeaveResource> presentsAndLeaves { get; set; }
+    }
 }
